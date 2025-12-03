@@ -5,6 +5,7 @@ import (
 	"bitaksi-finalcase/driver-service/internal/models"
 	"bitaksi-finalcase/driver-service/internal/services"
 	"context"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -173,12 +174,13 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 
 	// for ile beraber "_, val" ile "driver" değerleri içinde driver'ın dLat ve dLon bilgisini dönüyoruz.
 	for _, d := range drivers {
+		distanceRound := math.Round(d.Distance*10) / 10 // * istek atınca "distanceKm" değeri "4.97007864" şeklinde dönüyordu, "math" paketi ile 1 ondalıklı basamak şeklinde çıktı almak için kullandım.
 		// api'den gelecek isteğe dto ile istediğimiz değerleri dönüyoruz/dışarı açıyoruz.
 		item := dto.NearbyDriverResponse{
 			FirstName:  d.FirstName,
 			LastName:   d.LastName,
 			Plate:      d.Plate,
-			DistanceKm: d.Distance,
+			DistanceKm: distanceRound,
 		}
 
 		responseList = append(responseList, item)
