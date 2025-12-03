@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"log"
 	"regexp"
 
 	"bitaksi-finalcase/driver-service/internal/dto"
@@ -36,20 +37,24 @@ var plateRegex = regexp.MustCompile(`^[0-9]{2}[A-Z]{1,3}[0-9]{2,4}$`)
 func (s *DriverService) CreateDriver(ctx context.Context, driver *models.Driver) (*models.Driver, error) {
 
 	if driver.FirstName == "" || driver.LastName == "" || driver.Plate == "" {
+		log.Println("validation failed: missing fields.")
 		return nil, errors.New("Ad, Soyad  ve plaka alanlarının doldurulması zorunludur.")
 	}
 
 	// Plate format check
 	if !plateRegex.MatchString(driver.Plate) {
+		log.Panicln("validation failed: invalid plate formats.")
 		return nil, errors.New("Geçersiz Plaka Formatı. Örn:34ABC123")
 	}
 
 	// duplicate check
 	exists, err := s.repo.IsPlateExists(ctx, driver.Plate)
 	if err != nil {
+		log.Fatalf("error check plate existence: %v", err)
 		return nil, err
 	}
 	if exists {
+		log.Fatalf("plate already exists: %s", driver.Plate)
 		return nil, ErrPlateExists
 	}
 

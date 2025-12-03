@@ -24,14 +24,6 @@ type DriverRepository struct {
 	collection *mongo.Collection
 }
 
-/*
-func NewDriverRepository(db *mongo.Database) *DriverRepository {
-	return &DriverRepository{
-		collection: db.Collection("drivers"),
-	}
-}
-*/
-
 // Yeni bir Driver Repository oluşturduk.
 func NewDriverRepository(db *mongo.Database) *DriverRepository {
 	return &DriverRepository{
