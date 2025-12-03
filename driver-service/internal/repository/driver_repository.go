@@ -107,18 +107,7 @@ func (r *DriverRepository) DeleteDriverByID(ctx context.Context, id string) erro
 	return err
 }
 
-/*
-FindNearbyDrivers metodu için planım şöyle:
- 1. Metod imzası tanımla: FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error)
- 2. Belirtilen yarıçap içindeki sürücüleri bulmak için $centerSphere ile $geoWithin kullanarak bir MongoDB sorgusu oluştur.
-    * $centerSphere, [boylam, enlem] ve radyan cinsinden yarıçap alır.
-    * radiusKm, radyanca dönüştürülmelidir: radiusKm / R (burada R, Dünya'nın km cinsinden yarıçapı, yani 6371).
- 3. Verilmişse taxiType için bir filtre ekle.
- 4. Sorguyu yürüt.
- 5. Sonuçlar üzerinde yineleyerek, HaversineDistance fonksiyonunu kullanarak verilen lat/lon ile her sürücünün konumu arasındaki mesafeyi hesapla.
- 6. Sürücüleri hesaplanan mesafeye göre sırala.
- 7. Sıralanmış sürücü listesini döndür.
-*/
+// FindNearbyDrivers finds drivers within a given radius using geospatial queries.
 func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
 	// radiusKm'yi radyana dönüştürmek için km tipinde dünyanın yarıçapı
 	const earthRadiusKm = 6371
@@ -206,3 +195,28 @@ func (r *DriverRepository) GetAllDrivers(ctx context.Context, page, pageSize int
 	}
 	return drivers, total, nil
 }
+
+func (r *DriverRepository) IsPlateExists(ctx context.Context, plate string) (bool, error) {
+
+	count, err := r.collection.CountDocuments(ctx, bson.M{"plate": plate})
+	if err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
+}
+
+/* MongoDB tablosuna (collection) unique index ekler
+“Bu alanda (plate) iki aynı değer bulunamaz” der
+DB seviyesinde güvenlik sağlar, uygulama start up aşamasında 1 defa çalışır.
+
+func (r *DriverRepository) EnSureIndexes(ctx context.Context) error {
+
+	mod := mongo.IndexModel{
+		Keys:    bson.M{"plate": 1},
+		Options: options.Index().SetUnique(true),
+	}
+
+	_, err := r.collection.Indexes().CreateOne(ctx, mod)
+	return err
+} */

@@ -28,16 +28,27 @@ func NewDriverService(repo *repository.DriverRepository) *DriverService {
 	}
 }
 
-// ! Basit bir Validation işlemi driver ekliyoruz. Eklemeler yapılabilir.
+// CreateDriver adds a new driver after basic validation.
+var ErrPlateExists = errors.New("Plaka Kayıtlı")
+
 func (s *DriverService) CreateDriver(ctx context.Context, driver *models.Driver) (*models.Driver, error) {
 
 	if driver.FirstName == "" || driver.LastName == "" || driver.Plate == "" {
 		return nil, errors.New("Ad, soyad  ve plaka alanlarının doldurulması zorunludur.")
 	}
+
+	exists, err := s.repo.IsPlateExists(ctx, driver.Plate)
+	if err != nil {
+		return nil, err
+	}
+	if exists {
+		return nil, ErrPlateExists
+	}
+
 	return s.repo.CreateDriver(ctx, driver)
 }
 
-// TODO: ID'ye göre Driver getirir. Eklemeler yapılabilir. "string" → "ObjectID" dönüşümü yalnızca service katmanında yapılmalı
+// GetDriverByID retrieves a driver by ID, handling string-to-ObjectID conversion.
 func (s *DriverService) GetDriverByID(ctx context.Context, idStr string) (*models.Driver, error) {
 
 	objectID, err := primitive.ObjectIDFromHex(idStr)
@@ -55,11 +66,9 @@ func (s *DriverService) GetDriverByID(ctx context.Context, idStr string) (*model
 	}
 
 	return driver, nil
-
-	//return s.repo.GetDriverByID(ctx, id)
 }
 
-// TODO: Driver'da ki dolu alanları güncelleme
+// UpdateDriverByID updates non-nil fields of a driver.
 func (s *DriverService) UpdateDriverByID(ctx context.Context, id string, req *dto.DriverUpdateRequest) (*models.Driver, error) {
 	// Güncellenecek alanları tutmak için boş bir map oluşturuyoruz.
 	// bson.M MongoDB için bir map tipidir ve alan-değer çiftlerini temsil eder.
@@ -91,12 +100,12 @@ func (s *DriverService) UpdateDriverByID(ctx context.Context, id string, req *dt
 	return updatedDriver, nil
 }
 
-// TODO: Driver'ları siler.
+// DeleteDriverByID removes a driver by ID.
 func (s *DriverService) DeleteDriverByID(ctx context.Context, id string) error {
 	return s.repo.DeleteDriverByID(ctx, id)
 }
 
-// TODO: GetNearbyTaxis retrieves a list of nearby drivers based on location and taxi type.
+// GetNearbyTaxis retrieves a list of nearby drivers based on location and taxi type.
 func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
 	drivers, err := s.repo.FindNearbyDrivers(ctx, lat, lon, radiusKm, taxiType)
 	if err != nil {
@@ -106,7 +115,7 @@ func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm f
 	return drivers, nil
 }
 
-// TODO: Tüm driverları listeliyoruz.
+// GetAllDrivers retrieves all drivers with pagination.
 func (s *DriverService) GetAllDrivers(ctx context.Context, page, pageSize int) ([]*models.Driver, int64, error) {
 	return s.repo.GetAllDrivers(ctx, page, pageSize)
 }

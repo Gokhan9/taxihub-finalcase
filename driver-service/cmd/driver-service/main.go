@@ -20,7 +20,7 @@ func main() {
 	//* Config entegrasyonu
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		log.Fatalf("config dosyası yüklenemedi: %v", cfg)
+		log.Fatalf("config dosyası yüklenemedi: %v", err)
 	}
 
 	//*MongoDB Bağlantısı

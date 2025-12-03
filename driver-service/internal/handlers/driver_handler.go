@@ -6,6 +6,7 @@ import (
 	"bitaksi-finalcase/driver-service/internal/services"
 	"context"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,11 +23,12 @@ func NewDriverHandler(service *services.DriverService) *DriverHandler {
 
 // --------------------------------------  ENDPOINTS --------------------------------------
 
-// TODO: POST /drivers
+// POST
 func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 
 	var req dto.DriverCreateRequest
 
+	// JSON parse
 	if err := c.BodyParser(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error":   "JSON geçerli değil",
@@ -55,8 +57,15 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 		UpdatedAt: time.Now(),
 	}
 
-	created, err := h.service.CreateDriver(context.Background(), driver)
+	created, err := h.service.CreateDriver(c.Context(), driver)
 	if err != nil {
+
+		if strings.Contains(err.Error(), "Plaka Kayıtlı") {
+			return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -65,7 +74,7 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(created)
 }
 
-// TODO: GET /drivers/:id
+// GetDriverByID
 func (h *DriverHandler) GetDriverByID(c *fiber.Ctx) error {
 
 	id := c.Params("id")
@@ -87,7 +96,7 @@ func (h *DriverHandler) GetDriverByID(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(driver)
 }
 
-// TODO: PUT /drivers/:id
+// UpdateDriverByID
 func (h *DriverHandler) UpdateDriverByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -107,7 +116,7 @@ func (h *DriverHandler) UpdateDriverByID(c *fiber.Ctx) error {
 	return c.JSON(updatedDriver)
 }
 
-// TODO: DELETE /drivers/:id
+// DeleteDriverByID
 func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 
 	id := c.Params("id")
@@ -118,7 +127,7 @@ func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// TODO: GET /drivers/nearby
+// GetNearbyTaxisHandler
 func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 
 	// * lat,lon ve taxitype üzeriden query parametreleri oluşturulur.
@@ -156,25 +165,21 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 
 	// for ile beraber "_, val" ile "driver" değerleri içinde driver'ın dLat ve dLon bilgisini dönüyoruz.
 	for _, d := range drivers {
-		dLat := 0.0
-		dLon := 0.0
-	}
+		/* 		dLat := 0.0
+		   		dLon := 0.0
 
-		// GeoJSON: [Lon, Lat]
-		if len(d.Location.Coordinates) >= 2 {
-			dLat := d.Location.Coordinates[0]
-			dLon := d.Location.Coordinates[1]
-		}
-		
+		   		// GeoJSON: [Lon, Lat]
+		   		if len(d.Location.Coordinates) >= 2 {
+		   			dLon = d.Location.Coordinates[0]
+		   			dLat = d.Location.Coordinates[1]
+		   		} */
+
 		// api'den gelecek isteğe dto ile istediğimiz değerleri dönüyoruz/dışarı açıyoruz.
 		item := dto.NearbyDriverResponse{
-			ID:        d.ID.Hex(),
-			FullName:  d.FirstName + " " + d.LastName,
-			Plate:     d.Plate,
-			TaxiType:  d.TaxiType,
-			Latitude:  dLat,
-			Longitude: dLon,
-			Distance:  d.Distance,
+			FirstName:  d.FirstName,
+			LastName:   d.LastName,
+			Plate:      d.Plate,
+			DistanceKm: d.Distance,
 		}
 
 		responseList = append(responseList, item)
@@ -183,11 +188,10 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 	return c.JSON(responseList)
 }
 
-// TODO: GET /drivers
+// GetAllDrivers
 func (h *DriverHandler) GetAllDrivers(c *fiber.Ctx) error {
 
 	// read query params
-	//(pagination := c.Query("page", "1"))
 	page, err := strconv.Atoi(c.Query("page", "1"))
 	if err != nil || page < 1 {
 		page = 1
