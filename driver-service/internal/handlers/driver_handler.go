@@ -173,15 +173,6 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 
 	// for ile beraber "_, val" ile "driver" değerleri içinde driver'ın dLat ve dLon bilgisini dönüyoruz.
 	for _, d := range drivers {
-		/* 		dLat := 0.0
-		   		dLon := 0.0
-
-		   		// GeoJSON: [Lon, Lat]
-		   		if len(d.Location.Coordinates) >= 2 {
-		   			dLon = d.Location.Coordinates[0]
-		   			dLat = d.Location.Coordinates[1]
-		   		} */
-
 		// api'den gelecek isteğe dto ile istediğimiz değerleri dönüyoruz/dışarı açıyoruz.
 		item := dto.NearbyDriverResponse{
 			FirstName:  d.FirstName,
