@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"regexp"
 
 	"bitaksi-finalcase/driver-service/internal/dto"
 	"bitaksi-finalcase/driver-service/internal/models"
@@ -30,13 +31,20 @@ func NewDriverService(repo *repository.DriverRepository) *DriverService {
 
 // CreateDriver adds a new driver after basic validation.
 var ErrPlateExists = errors.New("Plaka Kayıtlı")
+var plateRegex = regexp.MustCompile(`^[0-9]{2}[A-Z]{1,3}[0-9]{2,4}$`)
 
 func (s *DriverService) CreateDriver(ctx context.Context, driver *models.Driver) (*models.Driver, error) {
 
 	if driver.FirstName == "" || driver.LastName == "" || driver.Plate == "" {
-		return nil, errors.New("Ad, soyad  ve plaka alanlarının doldurulması zorunludur.")
+		return nil, errors.New("Ad, Soyad  ve plaka alanlarının doldurulması zorunludur.")
 	}
 
+	// Plate format check
+	if !plateRegex.MatchString(driver.Plate) {
+		return nil, errors.New("Geçersiz Plaka Formatı. Örn:34ABC123")
+	}
+
+	// duplicate check
 	exists, err := s.repo.IsPlateExists(ctx, driver.Plate)
 	if err != nil {
 		return nil, err

@@ -60,8 +60,16 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 	created, err := h.service.CreateDriver(c.Context(), driver)
 	if err != nil {
 
+		// plate already exists
 		if strings.Contains(err.Error(), "Plaka Kayıtlı") {
 			return c.Status(fiber.StatusConflict).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+
+		// invalid plate format or missing fields
+		if strings.Contains(err.Error(), "Geçersiz Plaka") || strings.Contains(err.Error(), "Doldurulmadı") {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": err.Error(),
 			})
 		}

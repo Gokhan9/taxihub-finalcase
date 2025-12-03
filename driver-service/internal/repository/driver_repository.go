@@ -24,6 +24,14 @@ type DriverRepository struct {
 	collection *mongo.Collection
 }
 
+/*
+func NewDriverRepository(db *mongo.Database) *DriverRepository {
+	return &DriverRepository{
+		collection: db.Collection("drivers"),
+	}
+}
+*/
+
 // Yeni bir Driver Repository oluşturduk.
 func NewDriverRepository(db *mongo.Database) *DriverRepository {
 	return &DriverRepository{
@@ -206,10 +214,13 @@ func (r *DriverRepository) IsPlateExists(ctx context.Context, plate string) (boo
 	return count > 0, nil
 }
 
-/* MongoDB tablosuna (collection) unique index ekler
-“Bu alanda (plate) iki aynı değer bulunamaz” der
-DB seviyesinde güvenlik sağlar, uygulama start up aşamasında 1 defa çalışır.
+/*
+-MongoDB tablosuna(collection) unique index(DATABASE COSTRAINT) ekler, yani en alt seviye duplicate kayıtları engeller.
+-“Bu alanda (plate) iki aynı değer bulunamaz” der.
+-DB seviyesinde güvenlik sağlar, uygulama start up aşamasında 1 defa çalışır.
 
+* NOT: Business logic'ten bağımsızdır.
+*/
 func (r *DriverRepository) EnSureIndexes(ctx context.Context) error {
 
 	mod := mongo.IndexModel{
@@ -219,4 +230,4 @@ func (r *DriverRepository) EnSureIndexes(ctx context.Context) error {
 
 	_, err := r.collection.Indexes().CreateOne(ctx, mod)
 	return err
-} */
+}
