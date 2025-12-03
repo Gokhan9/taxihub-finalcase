@@ -16,7 +16,7 @@ services:
     container_name: driver-service
     restart: always
     environment:
-      MONGO_URI: "mongodb://localhost:27017"
+      MONGO_URI: "mongodb://mongo:27017"
       PORT: "8081"
       MONGO_DB_NAME: "bitaksi"
     ports:

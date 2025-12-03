@@ -48,8 +48,8 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 		CarBrand:  req.CarBrand,
 		CarModel:  req.CarModel,
 		Location: models.Location{
-			Lat: req.Lat,
-			Lon: req.Lon,
+			Type:        "Point",
+			Coordinates: []float64{req.Lon, req.Lat},
 		},
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
@@ -116,6 +116,71 @@ func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 	}
 
 	return c.SendStatus(fiber.StatusNoContent)
+}
+
+// TODO: GET /drivers/nearby
+func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
+
+	// * lat,lon ve taxitype üzeriden query parametreleri oluşturulur.
+	latStr := c.Query("lat")
+	lonStr := c.Query("lon")
+	taxiType := c.Query("taxiType")
+	radiusStr := c.Query("radius", "6") // Default radius to 6 km
+
+	// str-float dönüşümleri. Query parametreleri her zaman string gelir ve coğrafi hesaplamalar yaparken sayı gerekiyor.
+	lat, err := strconv.ParseFloat(latStr, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid latitude"})
+	}
+
+	lon, err := strconv.ParseFloat(lonStr, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid longitude"})
+	}
+
+	radiusKm, err := strconv.ParseFloat(radiusStr, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid radius"})
+	}
+
+	drivers, err := h.service.GetNearbyTaxis(c.Context(), lat, lon, radiusKm, taxiType)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	// DTO Listesi oluştur
+	responseList := make([]dto.NearbyDriverResponse, 0)
+
+	// for ile beraber "_, val" ile "driver" değerleri içinde driver'ın dLat ve dLon bilgisini dönüyoruz.
+	for _, d := range drivers {
+		dLat := 0.0
+		dLon := 0.0
+	}
+
+		// GeoJSON: [Lon, Lat]
+		if len(d.Location.Coordinates) >= 2 {
+			dLat := d.Location.Coordinates[0]
+			dLon := d.Location.Coordinates[1]
+		}
+		
+		// api'den gelecek isteğe dto ile istediğimiz değerleri dönüyoruz/dışarı açıyoruz.
+		item := dto.NearbyDriverResponse{
+			ID:        d.ID.Hex(),
+			FullName:  d.FirstName + " " + d.LastName,
+			Plate:     d.Plate,
+			TaxiType:  d.TaxiType,
+			Latitude:  dLat,
+			Longitude: dLon,
+			Distance:  d.Distance,
+		}
+
+		responseList = append(responseList, item)
+	}
+
+	return c.JSON(responseList)
 }
 
 // TODO: GET /drivers

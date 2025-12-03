@@ -17,16 +17,15 @@ func LoadConfig() (Config, error) {
 
 	var cfg Config
 
-	// 1. Önce .env dosyasını okumayı dene (Local Development için)
 	viper.AddConfigPath(".")
 	viper.SetConfigFile(".env")
 	viper.SetConfigType("env")
 
 	if err := viper.ReadInConfig(); err != nil {
-		// .env dosyası yoksa sorun değil, devam et. (Docker ortamı olabilir)
+		// .env dosyası olmasa bile devam etmesini sağlarız. (docker)
 	}
 
-	// 2. Ortam değişkenlerini bağla (Docker ve Override için)
+	// 2. Ortam değişkenlerini(docker) bağla.
 	viper.AutomaticEnv()
 
 	viper.BindEnv("PORT")

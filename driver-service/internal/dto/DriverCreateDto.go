@@ -1,5 +1,8 @@
 package dto
 
+/*
+Yeni bir sürücü kaydı oluşturulurken, API'ye gönderilen kişisel, araç ve konum bilgierini içeren istek modeli.
+*/
 type DriverCreateRequest struct {
 	FirstName string  `json:"firstName"`
 	LastName  string  `json:"lastName"`

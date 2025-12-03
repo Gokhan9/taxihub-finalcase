@@ -1,9 +1,12 @@
 package repository
 
 import (
-	"bitaksi-finalcase/driver-service/internal/models"
 	"context"
+	"sort" // Added for sorting drivers by distance
 	"time"
+
+	"bitaksi-finalcase/driver-service/internal/models"
+	. "bitaksi-finalcase/driver-service/internal/utils" // Added for HaversineDistance
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -21,14 +24,14 @@ type DriverRepository struct {
 	collection *mongo.Collection
 }
 
-// TODO: Yeni bir Driver Repository oluşturduk.
+// Yeni bir Driver Repository oluşturduk.
 func NewDriverRepository(db *mongo.Database) *DriverRepository {
 	return &DriverRepository{
 		collection: db.Collection("drivers"),
 	}
 }
 
-// TODO: Yeni Driver ekler.
+// Yeni Driver ekler.
 func (r *DriverRepository) CreateDriver(ctx context.Context, driver *models.Driver) (*models.Driver, error) {
 
 	if driver.ID.IsZero() {
@@ -53,7 +56,7 @@ func (r *DriverRepository) CreateDriver(ctx context.Context, driver *models.Driv
 	return driver, nil
 }
 
-// TODO: GetByID
+// GetByID
 func (r *DriverRepository) GetByID(ctx context.Context, id primitive.ObjectID) (*models.Driver, error) {
 
 	var driver models.Driver
@@ -68,7 +71,7 @@ func (r *DriverRepository) GetByID(ctx context.Context, id primitive.ObjectID) (
 	return &driver, nil
 }
 
-// TODO: Driver'ı Günceller.
+// Driver'ı Günceller.
 func (r *DriverRepository) UpdateDriverByID(ctx context.Context, id string, update bson.M) (*models.Driver, error) {
 
 	objID, err := primitive.ObjectIDFromHex(id)
@@ -76,7 +79,7 @@ func (r *DriverRepository) UpdateDriverByID(ctx context.Context, id string, upda
 		return nil, err
 	}
 
-	//* “updatedAt alanını güncelleme”
+	//* “updatedAt" alanını güncelleme..
 	update["updatedAt"] = time.Now()
 
 	opts := options.FindOneAndUpdate().SetReturnDocument(options.After)
@@ -92,7 +95,7 @@ func (r *DriverRepository) UpdateDriverByID(ctx context.Context, id string, upda
 	return &updatedDriver, nil
 }
 
-// TODO: Driver siler.
+// Driver siler.
 func (r *DriverRepository) DeleteDriverByID(ctx context.Context, id string) error {
 
 	objID, err := primitive.ObjectIDFromHex(id)
@@ -104,20 +107,84 @@ func (r *DriverRepository) DeleteDriverByID(ctx context.Context, id string) erro
 	return err
 }
 
-// TODO: Tüm Driver'ları listeler.
+/*
+FindNearbyDrivers metodu için planım şöyle:
+ 1. Metod imzası tanımla: FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error)
+ 2. Belirtilen yarıçap içindeki sürücüleri bulmak için $centerSphere ile $geoWithin kullanarak bir MongoDB sorgusu oluştur.
+    * $centerSphere, [boylam, enlem] ve radyan cinsinden yarıçap alır.
+    * radiusKm, radyanca dönüştürülmelidir: radiusKm / R (burada R, Dünya'nın km cinsinden yarıçapı, yani 6371).
+ 3. Verilmişse taxiType için bir filtre ekle.
+ 4. Sorguyu yürüt.
+ 5. Sonuçlar üzerinde yineleyerek, HaversineDistance fonksiyonunu kullanarak verilen lat/lon ile her sürücünün konumu arasındaki mesafeyi hesapla.
+ 6. Sürücüleri hesaplanan mesafeye göre sırala.
+ 7. Sıralanmış sürücü listesini döndür.
+*/
+func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
+	// radiusKm'yi radyana dönüştürmek için km tipinde dünyanın yarıçapı
+	const earthRadiusKm = 6371
+
+	// radiusKm'yi radyana çevirmek.
+	radiusRadians := radiusKm / earthRadiusKm
+
+	// Geospatial(Coğrafi) sorgulama ile belirtilen daireleme içerisindeki driverları filtreler.
+	filter := bson.M{
+		"location": bson.M{
+			"$geoWithin": bson.M{
+				"$centerSphere": []interface{}{
+					[]float64{lon, lat}, // MongoDB expects [longitude, latitude]
+					radiusRadians,
+				},
+			},
+		},
+	}
+
+	if taxiType != "" {
+		filter["taxiType"] = taxiType
+	}
+
+	cursor, err := r.collection.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var drivers []*models.Driver
+	for cursor.Next(ctx) {
+		var driver models.Driver
+		if err := cursor.Decode(&driver); err != nil {
+			return nil, err
+		}
+		drivers = append(drivers, &driver)
+	}
+
+	// Her sürücü için mesafe hesaplanır.
+	for _, driver := range drivers {
+		if len(driver.Location.Coordinates) >= 2 {
+			driver.Distance = HaversineDistance(lat, lon, driver.Location.Coordinates[1], driver.Location.Coordinates[0])
+		}
+	}
+
+	sort.Slice(drivers, func(i, j int) bool {
+		return drivers[i].Distance < drivers[j].Distance
+	})
+
+	return drivers, nil
+}
+
+// Tüm Driver'ları listeler.
 func (r *DriverRepository) GetAllDrivers(ctx context.Context, page, pageSize int) ([]*models.Driver, int64, error) {
 
-	//?MongoDB pagination yaklaşımı:
+	// ? MongoDB pagination yaklaşımı.
 	skip := int64((page - 1) * pageSize)
 	limit := int64(pageSize)
 
-	//*toplam count sayısı
+	//* Toplam count sayısı
 	total, err := r.collection.CountDocuments(ctx, bson.M{})
 	if err != nil {
 		return nil, 0, err
 	}
 
-	//*Driverları listele
+	//* Driverları listele
 	opts := options.Find().
 		SetSkip(skip).
 		SetLimit(limit).

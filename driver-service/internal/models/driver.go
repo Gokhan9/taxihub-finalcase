@@ -7,8 +7,8 @@ import (
 )
 
 type Location struct {
-	Lat float64 `bson:"lat" json:"lat"`
-	Lon float64 `bson:"lon" json:"lon"`
+	Type        string    `bson:"type" json:"type"`
+	Coordinates []float64 `bson:"coordinates" json:"coordinates"` // [longitude, latitude]
 }
 
 type Driver struct {
@@ -22,4 +22,5 @@ type Driver struct {
 	Location  Location           `bson:"location" json:"location"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`
 	UpdatedAt time.Time          `bson:"updatedAt" json:"updatedAt"`
+	Distance  float64            `json:"distance,omitempty"`
 }

@@ -78,8 +78,8 @@ func (s *DriverService) UpdateDriverByID(ctx context.Context, id string, req *dt
 
 	if req.Location != nil {
 		update["location"] = bson.M{
-			"lat": req.Location.Lat,
-			"lon": req.Location.Lon,
+			"type":        "Point",
+			"coordinates": []float64{req.Location.Lon, req.Location.Lat},
 		}
 	}
 
@@ -94,6 +94,16 @@ func (s *DriverService) UpdateDriverByID(ctx context.Context, id string, req *dt
 // TODO: Driver'ları siler.
 func (s *DriverService) DeleteDriverByID(ctx context.Context, id string) error {
 	return s.repo.DeleteDriverByID(ctx, id)
+}
+
+// TODO: GetNearbyTaxis retrieves a list of nearby drivers based on location and taxi type.
+func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
+	drivers, err := s.repo.FindNearbyDrivers(ctx, lat, lon, radiusKm, taxiType)
+	if err != nil {
+		return nil, err
+	}
+
+	return drivers, nil
 }
 
 // TODO: Tüm driverları listeliyoruz.
