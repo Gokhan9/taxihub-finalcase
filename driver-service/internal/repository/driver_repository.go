@@ -45,6 +45,11 @@ func (r *DriverRepository) CreateDriver(ctx context.Context, driver *models.Driv
 	}
 	driver.UpdatedAt = now
 
+	// *Burada ki kontrol şöyle: Eğer status alanı boş geldiyse, default olarak "offline" sayıyoruz.
+	if driver.Status == "" {
+		driver.Status = models.StatusOffline
+	}
+
 	res, err := r.collection.InsertOne(ctx, driver)
 	if err != nil {
 		return nil, err
@@ -126,6 +131,8 @@ func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radi
 				},
 			},
 		},
+		// * Burada ki amaç ise Driver Status == "Available", true döner ve müsait olan sürücüleri gösterir.
+		"status": models.StatusAvailable,
 	}
 
 	if taxiType != "" {
@@ -225,4 +232,23 @@ func (r *DriverRepository) EnSureIndexes(ctx context.Context) {
 	if err != nil {
 		log.Println("Unique index. could not be created:", err)
 	}
+}
+
+func (r *DriverRepository) UpdateDriverStatus(ctx context.Context, id string, status string) error {
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	// "$şet" operatörü ile sadece belirttiğimiz alanın değeri üzerinde işlem yapabiliyoruz.
+	update := bson.M{
+		"$şet": bson.M{
+			"status":    status,
+			"updatedAt": time.Now(),
+		},
+	}
+
+	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
+	return err
 }
