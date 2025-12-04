@@ -12,6 +12,7 @@ func SetupRouter(DriverHandler *handlers.DriverHandler) *fiber.App {
 
 	driverGroup := app.Group("/drivers")
 	driverGroup.Post("/", DriverHandler.CreateDriver)
+	driverGroup.Post("/:id/rate", DriverHandler.RateDriver)
 	driverGroup.Get("/", DriverHandler.GetAllDrivers)
 	driverGroup.Get("/nearby", DriverHandler.GetNearbyTaxisHandler) // New route for nearby taxis
 	driverGroup.Get("/:id", DriverHandler.GetDriverByID)

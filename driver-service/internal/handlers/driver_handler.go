@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -239,5 +240,26 @@ func (h *DriverHandler) UpdateStatus(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Sürücünün durumu güncellendi",
 		"status":  req.Status,
+	})
+}
+
+func (h *DriverHandler) RateDriver(c *fiber.Ctx) error {
+
+	id := c.Params("id")
+
+	var req dto.RateDriverRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"Error": "Geçersiz JSON"})
+	}
+
+	updatedDriver, err := h.service.RateDriver(c.Context(), id, req.Score)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(bson.M{
+		"message":     "Puan Verildi.",
+		"rating":      updatedDriver.Rating,
+		"ratingCount": updatedDriver.RatingCount,
 	})
 }

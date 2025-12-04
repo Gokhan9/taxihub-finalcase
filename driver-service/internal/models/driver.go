@@ -30,7 +30,7 @@ type Driver struct {
 	CreatedAt   time.Time          `bson:"createdAt" json:"createdAt"`
 	UpdatedAt   time.Time          `bson:"updatedAt" json:"updatedAt"`
 	Distance    float64            `json:"distance,omitempty"`
-	Status      string             `bson:"status" json:"status"` // YENİ ALAN: Sürücünün o anki durumu. json:"status" -> API'nin yanıtını döner, bson:"status" -> veritabanında bu ad ile saklanır.
-	Rating      float64            `bson:"rating" json:"rating"`
-	RatingCount int                `bson:"ratingCount" json:"ratingCount"`
+	Status      string             `bson:"status" json:"status"`           // Sürücünün o anki durumu. json:"status" -> API'nin yanıtını döner, bson:"status" -> veritabanında bu ad ile saklanır.
+	Rating      float64            `bson:"rating" json:"rating"`           // ortalama puan = 4.8 gibi. float döndüğünden dolayı.
+	RatingCount int                `bson:"ratingCount" json:"ratingCount"` // kaç kişinin oy kullandığını tutar.
 }

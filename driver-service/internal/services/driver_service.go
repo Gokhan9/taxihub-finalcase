@@ -140,3 +140,36 @@ func (s *DriverService) UpdateDriverStatus(ctx context.Context, id string, statu
 
 	return s.repo.UpdateDriverStatus(ctx, id, status)
 }
+
+// Driver'ın puanını hesaplama işlemi (1-5 arasında puanlanacak.) Standart'a uygun.
+func (s *DriverService) RateDriver(ctx context.Context, id string, ratingScore float64) (*models.Driver, error) {
+	// * score(puan) validation
+	if ratingScore < 1 || ratingScore > 5 {
+		return nil, errors.New("Puan 1 ile 5 arasında olmalıdır.")
+	}
+
+	driver, err := s.GetDriverByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	if driver == nil {
+		return nil, errors.New("Sürücü Bulunamadı.")
+	}
+
+	// Ortalama Hesabı.
+	currentTotalScore := driver.Rating * float64(driver.RatingCount) //? driver'ın o an ki mevcut toplam puanını hesaplıyoruz
+	newTotalScore := currentTotalScore + ratingScore                 //? yeni verilen puan + mevcut hesaplanan puanı topluyoruz,
+	newCount := driver.RatingCount + 1                               //? driver'ın puanlamasına + 1 ekliyoruz
+	newAverage := newTotalScore / float64(newCount)                  //? yeni ortalamayı matematiksel olarak hesaplıyoruz
+
+	err = s.repo.UpdateDriverRating(ctx, id, newAverage, newCount)
+	if err != nil {
+		return nil, err
+	}
+
+	// güncellenmiş olan puan durumunu döner.
+	driver.Rating = newAverage
+	driver.RatingCount = newCount
+	return driver, nil
+}

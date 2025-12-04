@@ -252,3 +252,23 @@ func (r *DriverRepository) UpdateDriverStatus(ctx context.Context, id string, st
 	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
 	return err
 }
+
+// UpdateDriverRating : Driver puanını ve oy sayısını güncelleyeceğiz..
+func (r *DriverRepository) UpdateDriverRating(ctx context.Context, id string, rating float64, ratingCount int) error {
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil
+	}
+
+	update := bson.M{
+		"$set": bson.M{
+			"rating":      rating,
+			"ratingCount": ratingCount,
+			"updatedAt":   time.Now(),
+		},
+	}
+
+	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
+	return err
+}
