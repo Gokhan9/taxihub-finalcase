@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"log"
 	"sort" // Added for sorting drivers by distance
 	"time"
 
@@ -213,7 +214,7 @@ func (r *DriverRepository) IsPlateExists(ctx context.Context, plate string) (boo
 
 * NOT: Business logic'ten bağımsızdır.
 */
-func (r *DriverRepository) EnSureIndexes(ctx context.Context) error {
+func (r *DriverRepository) EnSureIndexes(ctx context.Context) {
 
 	mod := mongo.IndexModel{
 		Keys:    bson.M{"plate": 1},
@@ -221,5 +222,7 @@ func (r *DriverRepository) EnSureIndexes(ctx context.Context) error {
 	}
 
 	_, err := r.collection.Indexes().CreateOne(ctx, mod)
-	return err
+	if err != nil {
+		log.Println("Unique index. could not be created:", err)
+	}
 }

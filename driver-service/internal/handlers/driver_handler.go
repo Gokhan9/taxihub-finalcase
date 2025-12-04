@@ -5,6 +5,7 @@ import (
 	"bitaksi-finalcase/driver-service/internal/models"
 	"bitaksi-finalcase/driver-service/internal/services"
 	"context"
+	"errors"
 	"math"
 	"strconv"
 	"strings"
@@ -62,7 +63,7 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 	if err != nil {
 
 		// plate already exists
-		if strings.Contains(err.Error(), "Plaka Kayıtlı") {
+		if errors.Is(err, services.ErrPlateExists) {
 			return c.Status(fiber.StatusConflict).JSON(fiber.Map{
 				"error": err.Error(),
 			})

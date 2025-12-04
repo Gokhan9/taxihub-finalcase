@@ -43,18 +43,16 @@ func (s *DriverService) CreateDriver(ctx context.Context, driver *models.Driver)
 
 	// Plate format check
 	if !plateRegex.MatchString(driver.Plate) {
-		log.Panicln("validation failed: invalid plate formats.")
+		log.Println("validation failed: invalid plate formats.")
 		return nil, errors.New("Geçersiz Plaka Formatı. Örn:34ABC123")
 	}
 
 	// duplicate check
 	exists, err := s.repo.IsPlateExists(ctx, driver.Plate)
 	if err != nil {
-		log.Fatalf("error check plate existence: %v", err)
 		return nil, err
 	}
 	if exists {
-		log.Fatalf("plate already exists: %s", driver.Plate)
 		return nil, ErrPlateExists
 	}
 
@@ -66,7 +64,7 @@ func (s *DriverService) GetDriverByID(ctx context.Context, idStr string) (*model
 
 	objectID, err := primitive.ObjectIDFromHex(idStr)
 	if err != nil {
-		return nil, errors.New("geçersiz id")
+		return nil, errors.New("Geçersiz ID")
 	}
 
 	driver, err := s.repo.GetByID(ctx, objectID)

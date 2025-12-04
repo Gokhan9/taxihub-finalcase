@@ -49,6 +49,7 @@ func main() {
 
 	// TODO: repo, service ve handler'ı birbirine bağlıyoruz.
 	driverRepo := repository.NewDriverRepository(db)
+	driverRepo.EnSureIndexes(context.Background()) // Ensure unique indexes (plate)
 	driverService := services.NewDriverService(driverRepo)
 	driverHandler := handlers.NewDriverHandler(driverService)
 
