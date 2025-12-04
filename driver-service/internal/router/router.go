@@ -3,6 +3,8 @@ package router
 import (
 	"bitaksi-finalcase/driver-service/internal/handlers"
 
+	_ "bitaksi-finalcase/driver-service/docs"
+
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -15,6 +15,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// @title Bitaksi Driver Service API
+// @version 1.0
+// @description Driver service içerisinde sürücü kayıt, arama, getirme, silme, durum güncelleme, status durumu, puanlamaya göre hesaplama yapan işlemleri yönetir.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8081
+// @BasePath /
+// @schemes http
 func main() {
 
 	//* Config entegrasyonu

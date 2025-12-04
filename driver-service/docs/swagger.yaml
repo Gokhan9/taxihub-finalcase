@@ -1,0 +1,195 @@
+basePath: /
+definitions:
+  dto.DriverCreateRequest:
+    properties:
+      carBrand:
+        type: string
+      carModel:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      lat:
+        type: number
+      lon:
+        type: number
+      plate:
+        type: string
+      taxiType:
+        type: string
+    type: object
+  dto.NearbyDriverResponse:
+    properties:
+      distanceKm:
+        description: km cinsinden mesafe
+        type: number
+      firstName:
+        type: string
+      lastName:
+        type: string
+      plate:
+        type: string
+    type: object
+  dto.RateDriverRequest:
+    properties:
+      score:
+        type: number
+    type: object
+  models.Driver:
+    properties:
+      carBrand:
+        type: string
+      carModel:
+        type: string
+      createdAt:
+        type: string
+      distance:
+        type: number
+      firstName:
+        type: string
+      id:
+        description: Belgeyi mongo'ya "primitive _id" olarak kaydeder. - id(string)
+          - objectID tipine çevirir.
+        type: string
+      lastName:
+        type: string
+      location:
+        $ref: '#/definitions/models.Location'
+      plate:
+        type: string
+      rating:
+        description: ortalama puan = 4.8 gibi. float döndüğünden dolayı.
+        type: number
+      ratingCount:
+        description: kaç kişinin oy kullandığını tutar.
+        type: integer
+      status:
+        description: Sürücünün o anki durumu. json:"status" -> API'nin yanıtını döner,
+          bson:"status" -> veritabanında bu ad ile saklanır.
+        type: string
+      taxiType:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Location:
+    properties:
+      coordinates:
+        description: '[longitude, latitude]'
+        items:
+          type: number
+        type: array
+      type:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    name: API Support
+  description: Driver service içerisinde sürücü kayıt, arama, getirme, silme, durum
+    güncelleme, status durumu, puanlamaya göre hesaplama yapan işlemleri yönetir.
+  license:
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Bitaksi Driver Service API
+  version: "1.0"
+paths:
+  /drivers:
+    post:
+      consumes:
+      - application/json
+      description: Sisteme yeni bir taksi sürücüsü kaydeder.
+      parameters:
+      - description: Sürücü Bilgileri
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DriverCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Hatalı İstek
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Plaka zaten kayıtlı
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Yeni Sürücü Oluştur
+      tags:
+      - Drivers
+  /drivers/{id}/rate:
+    post:
+      consumes:
+      - application/json
+      description: Bir sürücüye 1-5 arası puan verir.
+      parameters:
+      - description: Sürücü ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Puan Bilgisi
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RateDriverRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Sürücüyü Puanla
+      tags:
+      - Drivers
+  /drivers/nearby:
+    get:
+      consumes:
+      - application/json
+      description: Belirtilen konum ve yarıçaptaki "Müsait" (Available) taksileri
+        listeler.
+      parameters:
+      - description: Enlem (Latitude)
+        in: query
+        name: lat
+        required: true
+        type: number
+      - description: Boylam (Longitude)
+        in: query
+        name: lon
+        required: true
+        type: number
+      - description: 'Yarıçap (km) - Default: 6'
+        in: query
+        name: radius
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.NearbyDriverResponse'
+            type: array
+      summary: Yakındaki Taksileri Getir
+      tags:
+      - Drivers
+schemes:
+- http
+swagger: "2.0"

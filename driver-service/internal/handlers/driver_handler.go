@@ -25,7 +25,17 @@ func NewDriverHandler(service *services.DriverService) *DriverHandler {
 }
 
 // --------------------------------------  ENDPOINTS --------------------------------------
-
+// CreateDriver godoc
+// @Summary Yeni Sürücü Oluştur
+// @Description Sisteme yeni bir taksi sürücüsü kaydeder.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param request body dto.DriverCreateRequest true "Sürücü Bilgileri"
+// @Success 201 {object} models.Driver
+// @Failure 400 {object} map[string]string "Hatalı İstek"
+// @Failure 409 {object} map[string]string "Plaka zaten kayıtlı"
+// @Router /drivers [post]
 // POST
 func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 
@@ -138,7 +148,18 @@ func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-// GetNearbyTaxisHandler
+// GetNearbyTaxisHandler godoc
+// @Summary Yakındaki Taksileri Getir
+// @Description Belirtilen konum ve yarıçaptaki "Müsait" (Available) taksileri listeler.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param lat query number true "Enlem (Latitude)"
+// @Param lon query number true "Boylam (Longitude)"
+// @Param radius query number false "Yarıçap (km) - Default: 6"
+// @Success 200 {array} dto.NearbyDriverResponse
+// @Router /drivers/nearby [get]
+// GET
 func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 
 	// * lat,lon ve taxitype üzeriden query parametreleri oluşturulur.
@@ -243,6 +264,17 @@ func (h *DriverHandler) UpdateStatus(c *fiber.Ctx) error {
 	})
 }
 
+// RateDriver godoc
+// @Summary Sürücüyü Puanla
+// @Description Bir sürücüye 1-5 arası puan verir.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param id path string true "Sürücü ID"
+// @Param request body dto.RateDriverRequest true "Puan Bilgisi"
+// @Success 200 {object} map[string]interface{}
+// @Router /drivers/{id}/rate [post]
+// POST
 func (h *DriverHandler) RateDriver(c *fiber.Ctx) error {
 
 	id := c.Params("id")

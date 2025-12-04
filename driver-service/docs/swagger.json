@@ -1,0 +1,287 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "Driver service içerisinde sürücü kayıt, arama, getirme, silme, durum güncelleme, status durumu, puanlamaya göre hesaplama yapan işlemleri yönetir.",
+        "title": "Bitaksi Driver Service API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support"
+        },
+        "license": {
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "paths": {
+        "/drivers": {
+            "post": {
+                "description": "Sisteme yeni bir taksi sürücüsü kaydeder.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Yeni Sürücü Oluştur",
+                "parameters": [
+                    {
+                        "description": "Sürücü Bilgileri",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DriverCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Driver"
+                        }
+                    },
+                    "400": {
+                        "description": "Hatalı İstek",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Plaka zaten kayıtlı",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/drivers/nearby": {
+            "get": {
+                "description": "Belirtilen konum ve yarıçaptaki \"Müsait\" (Available) taksileri listeler.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Yakındaki Taksileri Getir",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "Enlem (Latitude)",
+                        "name": "lat",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Boylam (Longitude)",
+                        "name": "lon",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "Yarıçap (km) - Default: 6",
+                        "name": "radius",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.NearbyDriverResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/drivers/{id}/rate": {
+            "post": {
+                "description": "Bir sürücüye 1-5 arası puan verir.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Sürücüyü Puanla",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sürücü ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Puan Bilgisi",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RateDriverRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.DriverCreateRequest": {
+            "type": "object",
+            "properties": {
+                "carBrand": {
+                    "type": "string"
+                },
+                "carModel": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lon": {
+                    "type": "number"
+                },
+                "plate": {
+                    "type": "string"
+                },
+                "taxiType": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.NearbyDriverResponse": {
+            "type": "object",
+            "properties": {
+                "distanceKm": {
+                    "description": "km cinsinden mesafe",
+                    "type": "number"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "plate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RateDriverRequest": {
+            "type": "object",
+            "properties": {
+                "score": {
+                    "type": "number"
+                }
+            }
+        },
+        "models.Driver": {
+            "type": "object",
+            "properties": {
+                "carBrand": {
+                    "type": "string"
+                },
+                "carModel": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "distance": {
+                    "type": "number"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "Belgeyi mongo'ya \"primitive _id\" olarak kaydeder. - id(string) - objectID tipine çevirir.",
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/models.Location"
+                },
+                "plate": {
+                    "type": "string"
+                },
+                "rating": {
+                    "description": "ortalama puan = 4.8 gibi. float döndüğünden dolayı.",
+                    "type": "number"
+                },
+                "ratingCount": {
+                    "description": "kaç kişinin oy kullandığını tutar.",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "Sürücünün o anki durumu. json:\"status\" -\u003e API'nin yanıtını döner, bson:\"status\" -\u003e veritabanında bu ad ile saklanır.",
+                    "type": "string"
+                },
+                "taxiType": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Location": {
+            "type": "object",
+            "properties": {
+                "coordinates": {
+                    "description": "[longitude, latitude]",
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
