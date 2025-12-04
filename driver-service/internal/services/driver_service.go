@@ -130,3 +130,13 @@ func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm f
 func (s *DriverService) GetAllDrivers(ctx context.Context, page, pageSize int) ([]*models.Driver, int64, error) {
 	return s.repo.GetAllDrivers(ctx, page, pageSize)
 }
+
+func (s *DriverService) UpdateDriverStatus(ctx context.Context, id string, status string) error {
+
+	// business rule ekleyerek status'un geçerli olup olmadığına göre kontrol yapıyoruz.
+	if status != models.StatusAvailable && status != models.StatusBusy && status != models.StatusOffline {
+		return errors.New("Geçersiz durum bilgisi. (Available, Busy ya da Offline) olmalıdır.")
+	}
+
+	return s.repo.UpdateDriverStatus(ctx, id, status)
+}

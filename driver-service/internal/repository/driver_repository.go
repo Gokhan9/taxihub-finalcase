@@ -241,11 +241,11 @@ func (r *DriverRepository) UpdateDriverStatus(ctx context.Context, id string, st
 		return err
 	}
 
-	// "$şet" operatörü ile sadece belirttiğimiz alanın değeri üzerinde işlem yapabiliyoruz.
+	// "$set" operatörü ile sadece belirttiğimiz alanın değeri üzerinde işlem yapabiliyoruz.
 	update := bson.M{
-		"$şet": bson.M{
+		"$set": bson.M{
 			"status":    status,
-			"updatedAt": time.Now(),
+			"updatedAt": time.Now(), // statuste ki her değişiklikte(update) zamanı güncellemek gerekir.
 		},
 	}
 

@@ -19,7 +19,7 @@ const (
 )
 
 type Driver struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"` //belgeyi mongo'ya primitive _id olarak bekliyor.
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"` //Belgeyi mongo'ya "primitive _id" olarak kaydeder. - id(string) - objectID tipine çevirir.
 	FirstName string             `bson:"firstName" json:"firstName"`
 	LastName  string             `bson:"lastName" json:"lastName"`
 	Plate     string             `bson:"plate" json:"plate"`
@@ -31,4 +31,5 @@ type Driver struct {
 	UpdatedAt time.Time          `bson:"updatedAt" json:"updatedAt"`
 	Distance  float64            `json:"distance,omitempty"`
 	Status    string             `bson:"status" json:"status"` // YENİ ALAN: Sürücünün o anki durumu. json:"status" -> API'nin yanıtını döner, bson:"status" -> veritabanında bu ad ile saklanır.
+
 }

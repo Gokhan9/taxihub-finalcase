@@ -217,3 +217,27 @@ func (h *DriverHandler) GetAllDrivers(c *fiber.Ctx) error {
 		"drivers":  drivers,
 	})
 }
+
+// PATCH /driver/:id/status
+func (h *DriverHandler) UpdateStatus(c *fiber.Ctx) error {
+
+	id := c.Params("id")
+
+	var req dto.UpdateStatusRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"error": "Geçersiz JSON"})
+	}
+
+	// servis çağrısı
+	err := h.service.UpdateDriverStatus(c.Context(), id, req.Status)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Sürücünün durumu güncellendi",
+		"status":  req.Status,
+	})
+}
