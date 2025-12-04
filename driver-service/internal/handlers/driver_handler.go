@@ -96,6 +96,17 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 }
 
 // GetDriverByID
+// @Summary ID'ye göre Driver Detayı Getir
+// @Description ID'si verilen driver'ın bilgilerini detaylı bir şekilde dönen metod.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param id path string true "Driver ID"
+// @Success 200 {object} models.Driver
+// @Failure 400 {object} map[string]string "Geçersiz ID"
+// @Failure 401 {object} map[string]string "Sürücü bulunamadı"
+// @Router /drivers/{id} [get]
+// GET
 func (h *DriverHandler) GetDriverByID(c *fiber.Ctx) error {
 
 	id := c.Params("id")
@@ -118,6 +129,18 @@ func (h *DriverHandler) GetDriverByID(c *fiber.Ctx) error {
 }
 
 // UpdateDriverByID
+// @Summary ID'ye göre Driver Günceller
+// @Description Driver'ın ad, soyad, araç ve plaka bilgilerini günceller.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param id path string true "Driver ID"
+// @Param request body dto.DriverUpdateRequest true "Driver güncelleme bilgileri"
+// @Success 200 {object} models.Driver
+// @Failure 400 {object} map[string]string "Hatalı İstek - StatusBadRequest"
+// @Failure 404 {object} map[string]string "Sürücü Bulunamadı - StatusNotFound"
+// @Router /driver/{id} [put]
+// PUT
 func (h *DriverHandler) UpdateDriverByID(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -138,6 +161,17 @@ func (h *DriverHandler) UpdateDriverByID(c *fiber.Ctx) error {
 }
 
 // DeleteDriverByID
+// @Summary ID'ye göre Driver Siler
+// @Description API'den gelen isteğe göre ID ile eşleşen Driver'ı kalıcı olarak silme işlemi yapar.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param id path string true "Sürücü ID"
+// @Success 204
+// @Failure 400 {object} map[string]string "Geçersiz ID"
+// @Failure 404 {object} map[string]string "Sürücü Bulunamadı"
+// @Router /drivers/{id} [delete]
+// DELETE
 func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 
 	id := c.Params("id")
@@ -150,7 +184,7 @@ func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 
 // GetNearbyTaxisHandler godoc
 // @Summary Yakındaki Taksileri Getir
-// @Description Belirtilen konum ve yarıçaptaki "Müsait" (Available) taksileri listeler.
+// @Description Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.
 // @Tags Drivers
 // @Accept json
 // @Produce json
@@ -192,7 +226,7 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	// DTO Listesi oluştur
+	// dto listesi oluşturduk
 	responseList := make([]dto.NearbyDriverResponse, 0)
 
 	// for ile beraber "_, val" ile "driver" değerleri içinde driver'ın dLat ve dLon bilgisini dönüyoruz.
@@ -212,7 +246,18 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 	return c.JSON(responseList)
 }
 
-// GetAllDrivers
+// GetAllDrivers godoc
+// @Summary Tüm Driverları Listele
+// @Description Kayıtlı olan tüm driverları sayfalı yani (pagination) şeklinde listeler.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param page query int false "Page Number (Default: 1)"
+// @Param pageSize query int false "Page Size (Default: 20)"
+// @Success 200 {object} map[string]interface{} "drivers: [], total: int, page: int"
+// @Failure 500 {object} map[string]string "Sunucu Hatası - Status Internal Server Error"
+// @Router /drivers [get]
+// GET
 func (h *DriverHandler) GetAllDrivers(c *fiber.Ctx) error {
 
 	// read query params
@@ -240,7 +285,18 @@ func (h *DriverHandler) GetAllDrivers(c *fiber.Ctx) error {
 	})
 }
 
-// PATCH /driver/:id/status
+// UpdateStatus godoc
+// @Summary Driver'ın Status Bilgilerini Günceller
+// @Description Driver'ın uygulamayı başlatması, müşteri olması veya olmaması durumunu (available, busy or offline) günceller.
+// @Tags Drivers
+// @Accept json
+// @Produce json
+// @Param id path string true "Sürücü ID"
+// @Param request body dto.UpdateStatusRequest true "Durum Bilgisi"
+// @Success 200 {object} map[string]interface{} "message ve status durumunu döner."
+// @Failure 400 {object} map[string]string "geçersiz durum bilgisi"
+// @Router /drivers/{id}/status [patch]
+// PATCH
 func (h *DriverHandler) UpdateStatus(c *fiber.Ctx) error {
 
 	id := c.Params("id")

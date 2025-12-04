@@ -18,7 +18,111 @@
     "host": "localhost:8081",
     "basePath": "/",
     "paths": {
+        "/driver/{id}": {
+            "put": {
+                "description": "Driver'ın ad, soyad, araç ve plaka bilgilerini günceller.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "ID'ye göre Driver Günceller",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Driver ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Driver güncelleme bilgileri",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DriverUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Driver"
+                        }
+                    },
+                    "400": {
+                        "description": "Hatalı İstek - StatusBadRequest",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Sürücü Bulunamadı - StatusNotFound",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/drivers": {
+            "get": {
+                "description": "Kayıtlı olan tüm driverları sayfalı yani (pagination) şeklinde listeler.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Tüm Driverları Listele",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page Number (Default: 1)",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size (Default: 20)",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "drivers: [], total: int, page: int",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "Sunucu Hatası - Status Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Sisteme yeni bir taksi sürücüsü kaydeder.",
                 "consumes": [
@@ -72,7 +176,7 @@
         },
         "/drivers/nearby": {
             "get": {
-                "description": "Belirtilen konum ve yarıçaptaki \"Müsait\" (Available) taksileri listeler.",
+                "description": "Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.",
                 "consumes": [
                     "application/json"
                 ],
@@ -112,6 +216,101 @@
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/dto.NearbyDriverResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/drivers/{id}": {
+            "get": {
+                "description": "ID'si verilen driver'ın bilgilerini detaylı bir şekilde dönen metod.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "ID'ye göre Driver Detayı Getir",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Driver ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Driver"
+                        }
+                    },
+                    "400": {
+                        "description": "Geçersiz ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Sürücü bulunamadı",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "API'den gelen isteğe göre ID ile eşleşen Driver'ı kalıcı olarak silme işlemi yapar.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "ID'ye göre Driver Siler",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sürücü ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Geçersiz ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Sürücü Bulunamadı",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
                             }
                         }
                     }
@@ -159,6 +358,57 @@
                     }
                 }
             }
+        },
+        "/drivers/{id}/status": {
+            "patch": {
+                "description": "Driver'ın uygulamayı başlatması, müşteri olması veya olmaması durumunu (available, busy or offline) günceller.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Drivers"
+                ],
+                "summary": "Driver'ın Status Bilgilerini Günceller",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sürücü ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Durum Bilgisi",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message ve status durumunu döner.",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "geçersiz durum bilgisi",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -191,6 +441,34 @@
                 }
             }
         },
+        "dto.DriverUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "location": {
+                    "$ref": "#/definitions/dto.Location"
+                },
+                "plate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Location": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "number"
+                },
+                "lon": {
+                    "type": "number"
+                }
+            }
+        },
         "dto.NearbyDriverResponse": {
             "type": "object",
             "properties": {
@@ -214,6 +492,14 @@
             "properties": {
                 "score": {
                     "type": "number"
+                }
+            }
+        },
+        "dto.UpdateStatusRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
                 }
             }
         },

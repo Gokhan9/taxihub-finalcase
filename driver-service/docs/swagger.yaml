@@ -19,6 +19,24 @@ definitions:
       taxiType:
         type: string
     type: object
+  dto.DriverUpdateRequest:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      location:
+        $ref: '#/definitions/dto.Location'
+      plate:
+        type: string
+    type: object
+  dto.Location:
+    properties:
+      lat:
+        type: number
+      lon:
+        type: number
+    type: object
   dto.NearbyDriverResponse:
     properties:
       distanceKm:
@@ -35,6 +53,11 @@ definitions:
     properties:
       score:
         type: number
+    type: object
+  dto.UpdateStatusRequest:
+    properties:
+      status:
+        type: string
     type: object
   models.Driver:
     properties:
@@ -95,7 +118,77 @@ info:
   title: Bitaksi Driver Service API
   version: "1.0"
 paths:
+  /driver/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Driver'ın ad, soyad, araç ve plaka bilgilerini günceller.
+      parameters:
+      - description: Driver ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Driver güncelleme bilgileri
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DriverUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Hatalı İstek - StatusBadRequest
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Sürücü Bulunamadı - StatusNotFound
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: ID'ye göre Driver Günceller
+      tags:
+      - Drivers
   /drivers:
+    get:
+      consumes:
+      - application/json
+      description: Kayıtlı olan tüm driverları sayfalı yani (pagination) şeklinde
+        listeler.
+      parameters:
+      - description: 'Page Number (Default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Page Size (Default: 20)'
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'drivers: [], total: int, page: int'
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Sunucu Hatası - Status Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Tüm Driverları Listele
+      tags:
+      - Drivers
     post:
       consumes:
       - application/json
@@ -129,6 +222,70 @@ paths:
       summary: Yeni Sürücü Oluştur
       tags:
       - Drivers
+  /drivers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API'den gelen isteğe göre ID ile eşleşen Driver'ı kalıcı olarak
+        silme işlemi yapar.
+      parameters:
+      - description: Sürücü ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Geçersiz ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Sürücü Bulunamadı
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: ID'ye göre Driver Siler
+      tags:
+      - Drivers
+    get:
+      consumes:
+      - application/json
+      description: ID'si verilen driver'ın bilgilerini detaylı bir şekilde dönen metod.
+      parameters:
+      - description: Driver ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Driver'
+        "400":
+          description: Geçersiz ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Sürücü bulunamadı
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: ID'ye göre Driver Detayı Getir
+      tags:
+      - Drivers
   /drivers/{id}/rate:
     post:
       consumes:
@@ -157,12 +314,46 @@ paths:
       summary: Sürücüyü Puanla
       tags:
       - Drivers
+  /drivers/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Driver'ın uygulamayı başlatması, müşteri olması veya olmaması durumunu
+        (available, busy or offline) günceller.
+      parameters:
+      - description: Sürücü ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Durum Bilgisi
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: message ve status durumunu döner.
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: geçersiz durum bilgisi
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Driver'ın Status Bilgilerini Günceller
+      tags:
+      - Drivers
   /drivers/nearby:
     get:
       consumes:
       - application/json
-      description: Belirtilen konum ve yarıçaptaki "Müsait" (Available) taksileri
-        listeler.
+      description: Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.
       parameters:
       - description: Enlem (Latitude)
         in: query

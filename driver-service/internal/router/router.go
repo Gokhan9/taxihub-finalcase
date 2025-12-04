@@ -6,11 +6,14 @@ import (
 	_ "bitaksi-finalcase/driver-service/docs"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/swagger"
 )
 
 func SetupRouter(DriverHandler *handlers.DriverHandler) *fiber.App {
 
 	app := fiber.New()
+
+	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	driverGroup := app.Group("/drivers")
 	driverGroup.Post("/", DriverHandler.CreateDriver)
