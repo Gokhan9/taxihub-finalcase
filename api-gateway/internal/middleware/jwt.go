@@ -6,6 +6,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+/*
+Request(istek), router'a geldikten sonra güvenlik katmanından kaçması gerekir. Biz bunu middleware içerisinde kontrol ediyoruz.
+Gelen requestlerin authorization(yetkilendirme) yapılarını kontrol eder. "Bearer token" formatında bir format var mı kontrol eder.
+Yetkisiz kişilerin servislere erişimini kısıtlaması nedeniyle önemli bir katman.
+*/
+
 func JWTMiddleware(secret string) fiber.Handler {
 
 	return func(c *fiber.Ctx) error {

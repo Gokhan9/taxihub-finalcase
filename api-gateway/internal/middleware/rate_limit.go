@@ -12,6 +12,10 @@ import (
 var visitors = make(map[string]*rate.Limiter)
 var mu sync.Mutex
 
+/*
+Genel kullanım amacı IP isteklerinden gelen request(istek) sayısını sınırlar.. (örnek: saniyede 5 istek etc..)
+Middleware kapsamında önemi ise servisler üzerinde aşırı yükleme ve kötü niyetli yazılımlara karşı tam koruma sağlanan ara yazılım katmanı olarakta bilinir.
+*/
 func getVisitor(ip string) *rate.Limiter {
 
 	mu.Lock()
@@ -30,7 +34,7 @@ func init() {
 	go func() {
 		for {
 			time.Sleep(time.Minute * 5)
-			mu.Lock()
+			mu.Lock() // 5 istek sonrası goroutine devreye girer ve locklama yapar.
 			for ip, l := range visitors {
 				_ = l
 				_ = ip

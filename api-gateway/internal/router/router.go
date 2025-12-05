@@ -14,7 +14,7 @@ type GatewayConfig struct {
 
 /*
 Fiber App'i işler ve route'ları kurar.
-Konfigürasyon yüklendikten sonra ki gelen isteklerin(HTTP) yol haritasını belirleyen "trafik polisidir.."
+Konfigürasyon yüklendikten sonra ki gelen isteklerin(HTTP) yol haritasını belirleyen "trafik polisidir.." Kısaca istekleri dağıtır.
 */
 func SetupRouter(app *fiber.App, cfg GatewayConfig) *fiber.App {
 
@@ -30,7 +30,7 @@ func SetupRouter(app *fiber.App, cfg GatewayConfig) *fiber.App {
 	proxyHandler := handlers.NewProxyHandler(cfg.DriverServiceURL)
 
 	// Endpointleri, proxy handler içerisine mapledik.
-	// "/*" drivers altında yer alan tüm HTTP isteklerini yakalar ve bunları api gateway içerisinde yer alan handlers yapısında ki "Proxy" yapısına iletir. Bu sayede istemci arkada kaç tane servis çalışırsa çalışsın tek bir servis ile muhattap olur.
+	// "/*" drivers altında yer alan tüm HTTP isteklerini yakalar ve bunları API gateway içerisinde yer alan handlers yapısında ki "Proxy" yapısına iletir. Bu sayede istemci arkada kaç tane servis çalışırsa çalışsın tek bir servis ile muhattap olur.
 	driverGroup.All("/*", proxyHandler.Handle)
 	driverGroup.All("", proxyHandler.Handle)
 
