@@ -54,6 +54,13 @@ definitions:
       score:
         type: number
     type: object
+  dto.UpdateLocationRequest:
+    properties:
+      lat:
+        type: number
+      lon:
+        type: number
+    type: object
   dto.UpdateStatusRequest:
     properties:
       status:
@@ -286,6 +293,45 @@ paths:
       summary: ID'ye göre Driver Detayı Getir
       tags:
       - Drivers
+  /drivers/{id}/location:
+    put:
+      consumes:
+      - application/json
+      description: Sürücünün hareket halinde konumunu güncelleyecek bir metod.
+      parameters:
+      - description: Sürücü ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Konum Bilgisi
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateLocationRequest'
+      responses:
+        "200":
+          description: Başarı Mesajı
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Hatalı İstek
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Sürücü Bulunamadı
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Sürücünü Location Bilgisi Alma
+      tags:
+      - Driver
   /drivers/{id}/rate:
     post:
       consumes:

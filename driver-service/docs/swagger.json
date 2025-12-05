@@ -317,6 +317,65 @@
                 }
             }
         },
+        "/drivers/{id}/location": {
+            "put": {
+                "description": "Sürücünün hareket halinde konumunu güncelleyecek bir metod.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Driver"
+                ],
+                "summary": "Sürücünü Location Bilgisi Alma",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sürücü ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Konum Bilgisi",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateLocationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Başarı Mesajı",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Hatalı İstek",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Sürücü Bulunamadı",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/drivers/{id}/rate": {
             "post": {
                 "description": "Bir sürücüye 1-5 arası puan verir.",
@@ -491,6 +550,17 @@
             "type": "object",
             "properties": {
                 "score": {
+                    "type": "number"
+                }
+            }
+        },
+        "dto.UpdateLocationRequest": {
+            "type": "object",
+            "properties": {
+                "lat": {
+                    "type": "number"
+                },
+                "lon": {
                     "type": "number"
                 }
             }
