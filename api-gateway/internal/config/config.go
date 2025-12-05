@@ -12,6 +12,12 @@ type Config struct {
 	JWTSecret        string `mapstructure:"JWT_SECRET"`
 }
 
+/*
+Bu katman, her şeyin başladığı yerdir ve uygulama ayağa kalkmadan önce "nasıl" çalışacağını bilmesi gerekir.
+Uygulamanın konfigurasyonları bu katmanda yönetilir. Adı üstünde "config".
+PORT, DRIVER_SERVICE_URL, JWT_SECRET(Güvenlik Anahtarı) gibi kritik bilgileri ".env" dosyasından okur. Viper kütüphanesi sayesinde bu veriler okunur ve doğrulanır. Bu yapı
+olmadan gateway nereye bağlanacağını bilemez.
+*/
 func LoadConfig() (Config, error) {
 
 	var cfg Config
@@ -37,7 +43,7 @@ func LoadConfig() (Config, error) {
 	}
 
 	if cfg.DriverServiceURL == "" {
-		return cfg, errors.New("DRIVER_SERVICE_URL konfigürasyonu yapılmalı")
+		return cfg, errors.New("DRIVER_SERVICE_URL konfigürasyonu yapılmalı.")
 	}
 
 	return cfg, nil

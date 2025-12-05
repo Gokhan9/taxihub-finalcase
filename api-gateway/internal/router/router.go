@@ -13,23 +13,24 @@ type GatewayConfig struct {
 }
 
 /*
-TODO: Fiber App'i işler ve route'ları kurar.
+Fiber App'i işler ve route'ları kurar.
+Konfigürasyon yüklendikten sonra ki gelen isteklerin(HTTP) yol haritasını belirleyen "trafik polisidir.."
 */
 func SetupRouter(app *fiber.App, cfg GatewayConfig) *fiber.App {
 
+	// "/health" endpointi(adres) kullanarak servis&servislerin ayakta olup olmadığını bildirir.
 	app.Get("/health", func(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "ok"})
 	})
 
 	driverGroup := app.Group("/drivers") // Driver'dan gelen route'leri bir grup altında topluyoruz.
 
-	/*
-		TODO: Proxy Handler: Tüm "/drivers" isteklerini DriverService'e ileten bir proxy.
-		TODO: Koruma sağlar(method&path), driver-service'e yönlendirme yapıyor.
-	*/
+	// Proxy Handler: Tüm "/drivers" isteklerini DriverService'e ileten bir proxy.
+	// Koruma sağlar(method&path), driver-service'e yönlendirme yapıyor.
 	proxyHandler := handlers.NewProxyHandler(cfg.DriverServiceURL)
 
-	// TODO: Endpointleri, proxy handler içerisine mapledik.
+	// Endpointleri, proxy handler içerisine mapledik.
+	// "/*" drivers altında yer alan tüm HTTP isteklerini yakalar ve bunları api gateway içerisinde yer alan handlers yapısında ki "Proxy" yapısına iletir. Bu sayede istemci arkada kaç tane servis çalışırsa çalışsın tek bir servis ile muhattap olur.
 	driverGroup.All("/*", proxyHandler.Handle)
 	driverGroup.All("", proxyHandler.Handle)
 
