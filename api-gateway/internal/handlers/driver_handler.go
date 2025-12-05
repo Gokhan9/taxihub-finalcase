@@ -29,8 +29,10 @@ func NewProxyHandler(targetRaw string) *ProxyHandler {
 	}
 }
 
-// Handle: fiber'den gelen isteği alır, driver-service'e aynı method & path ile gönderir,
-// response'u okuyup client'a iletir.
+/*
+Handle: fiber'den gelen isteği alır, driver-service'e aynı method & path ile gönderir,
+Gateway'in kalbidir ve gelen isteğin metoduna göre(get,post) body'sini ve headerlarını hedef servise iletir.
+*/
 func (h *ProxyHandler) Handle(c *fiber.Ctx) error {
 
 	originalPath := c.OriginalURL()

@@ -7,7 +7,7 @@ import (
 )
 
 /*
-Request(istek), router'a geldikten sonra güvenlik katmanından kaçması gerekir. Biz bunu middleware içerisinde kontrol ediyoruz.
+Request(istek), router'a geldikten sonra güvenlik katmanından geçmesi gerekir. Biz bunu middleware içerisinde kontrol ediyoruz.
 Gelen requestlerin authorization(yetkilendirme) yapılarını kontrol eder. "Bearer token" formatında bir format var mı kontrol eder.
 Yetkisiz kişilerin servislere erişimini kısıtlaması nedeniyle önemli bir katman.
 */
@@ -19,6 +19,7 @@ func JWTMiddleware(secret string) fiber.Handler {
 			return c.Next()
 		}
 
+		// Get isteği üzerinden yetkilendirme kontrolü ve sonrasında bir str formatında json err.
 		auth := c.Get("Authorization")
 		if auth == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Authorization header eksik."})
