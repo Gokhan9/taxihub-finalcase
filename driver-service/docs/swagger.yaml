@@ -226,7 +226,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Yeni Sürücü Oluştur
+      summary: Yeni Driver Oluştur
       tags:
       - Drivers
   /drivers/{id}:
@@ -329,7 +329,7 @@ paths:
             additionalProperties:
               type: string
             type: object
-      summary: Sürücünü Location Bilgisi Alma
+      summary: Driver'dan Location Bilgisi Alma
       tags:
       - Driver
   /drivers/{id}/rate:

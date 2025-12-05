@@ -1,9 +1,10 @@
 package router
 
 import (
+	_ "bitaksi-finalcase/driver-service/docs"
 	"bitaksi-finalcase/driver-service/internal/handlers"
 
-	_ "bitaksi-finalcase/driver-service/docs"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
@@ -12,6 +13,8 @@ import (
 func SetupRouter(DriverHandler *handlers.DriverHandler) *fiber.App {
 
 	app := fiber.New()
+
+	app.Use(recover.New())
 
 	app.Get("/swagger/*", swagger.HandlerDefault)
 

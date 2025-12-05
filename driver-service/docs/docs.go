@@ -137,7 +137,7 @@ const docTemplate = `{
                 "tags": [
                     "Drivers"
                 ],
-                "summary": "Yeni Sürücü Oluştur",
+                "summary": "Yeni Driver Oluştur",
                 "parameters": [
                     {
                         "description": "Sürücü Bilgileri",
@@ -329,7 +329,7 @@ const docTemplate = `{
                 "tags": [
                     "Driver"
                 ],
-                "summary": "Sürücünü Location Bilgisi Alma",
+                "summary": "Driver'dan Location Bilgisi Alma",
                 "parameters": [
                     {
                         "type": "string",

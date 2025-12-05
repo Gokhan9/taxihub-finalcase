@@ -277,7 +277,7 @@ func (r *DriverRepository) UpdateDriverLocation(ctx context.Context, driverID st
 
 	objID, err := primitive.ObjectIDFromHex(driverID)
 	if err != nil {
-		return nil
+		return err
 	}
 
 	// "MongoDB GeoJSON" formatı kullanarak enlem ve boylam işlemleri yaparız. Öncelikle işlem sırasına göre longitude(boylam), sonrasında latitude(enlem) yazılır.

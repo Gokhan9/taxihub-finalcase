@@ -6,6 +6,7 @@ import (
 	"bitaksi-finalcase/driver-service/internal/services"
 	"context"
 	"errors"
+	"log"
 	"math"
 	"strconv"
 	"strings"
@@ -26,7 +27,7 @@ func NewDriverHandler(service *services.DriverService) *DriverHandler {
 
 // --------------------------------------  ENDPOINTS --------------------------------------
 // CreateDriver godoc
-// @Summary Yeni Sürücü Oluştur
+// @Summary Yeni Driver Oluştur
 // @Description Sisteme yeni bir taksi sürücüsü kaydeder.
 // @Tags Drivers
 // @Accept json
@@ -353,7 +354,7 @@ func (h *DriverHandler) RateDriver(c *fiber.Ctx) error {
 }
 
 // UpdateLocation godoc
-// @Summary Sürücünü Location Bilgisi Alma
+// @Summary Driver'dan Location Bilgisi Alma
 // @Description Sürücünün hareket halinde konumunu güncelleyecek bir metod.
 // @Tags Driver
 // @Accept json
@@ -370,13 +371,17 @@ func (h *DriverHandler) UpdateLocation(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var req dto.UpdateLocationRequest
 	if err := c.BodyParser(&req); err != nil {
+		log.Println("JSON parsing hatası:", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Geçersiz JSON Formatı.",
 		})
 	}
 
+	log.Printf("Servis Çağırılıyor. ID: %s, Lat: %f, Lon: %f\n", id, req.Lat, req.Lon)
+
 	err := h.service.UpdateDriverLocation(c.Context(), id, req)
 	if err != nil {
+		log.Println("Service Hatası:", err)
 		if err == mongo.ErrNoDocuments {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"err": "Sürücü Bulunamadı"})
 		}
@@ -384,6 +389,7 @@ func (h *DriverHandler) UpdateLocation(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
+	log.Println("UpdateLocation başarılı bir şekilde çalışıyor.")
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Konum Başarıyla Güncellendi.",
 	})

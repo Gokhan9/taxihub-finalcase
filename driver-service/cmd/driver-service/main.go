@@ -13,6 +13,8 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	_ "bitaksi-finalcase/driver-service/docs"
 )
 
 // @title Bitaksi Driver Service API
@@ -67,7 +69,7 @@ func main() {
 	fiberApp := router.SetupRouter(driverHandler)
 
 	log.Printf("Driver Service %s portunda çalışıyor.", cfg.Port)
-	if err := fiberApp.Listen(":" + cfg.Port); err != nil {
+	if err := fiberApp.Listen("0.0.0.0:" + cfg.Port); err != nil {
 		log.Fatalf("Fiber başlatılamadı: %v", err)
 	}
 }
