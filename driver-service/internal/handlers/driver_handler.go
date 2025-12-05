@@ -351,3 +351,40 @@ func (h *DriverHandler) RateDriver(c *fiber.Ctx) error {
 		"ratingCount": updatedDriver.RatingCount,
 	})
 }
+
+// UpdateLocation godoc
+// @Summary Sürücünü Location Bilgisi Alma
+// @Description Sürücünün hareket halinde konumunu güncelleyecek bir metod.
+// @Tags Driver
+// @Accept json
+// @Product json
+// @Param id path string true "Sürücü ID"
+// @Param request body dto.UpdateLocationRequest true "Konum Bilgisi"
+// @Success 200 {object} map[string]string "Başarı Mesajı"
+// @Failure 400 {object} map[string]string "Hatalı İstek"
+// @Failure 404 {object} map[string]string "Sürücü Bulunamadı"
+// @Router /drivers/{id}/location [put]
+// PUT
+func (h *DriverHandler) UpdateLocation(c *fiber.Ctx) error {
+
+	id := c.Params("id")
+	var req dto.UpdateLocationRequest
+	if err := c.BodyParser(&req); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Geçersiz JSON Formatı.",
+		})
+	}
+
+	err := h.service.UpdateDriverLocation(c.Context(), id, req)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"err": "Sürücü Bulunamadı"})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Konum Başarıyla Güncellendi.",
+	})
+}
