@@ -15,7 +15,9 @@ type DriverClient struct {
 	client  *http.Client
 }
 
-// Yeni bir driver client oluşturuyoruz
+/*
+en tamal amacı driver-service ile iletişim kurmak.(Get,post,put ve delete)
+*/
 func NewDriverClient() *DriverClient {
 
 	// * Env'den DRIVER_SERVICE_URL'ini alır.

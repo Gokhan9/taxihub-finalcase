@@ -11,6 +11,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+/*
+Yönlendirme amaçlı kullanılan bir katman.
+Router içerisinde yer alan /_forward/* metodu gibi yollar için kullanılır.
+Daha çok "raw" yönlendiricidir. Yani http frameworklerinin (fiber,gin,echo) requestine dokunulmamış bir haliyle başka bir servise iletilmesi.
+*/
 func ForwardRawRequest(targetBase string) fiber.Handler {
 
 	u, _ := url.Parse(targetBase)
