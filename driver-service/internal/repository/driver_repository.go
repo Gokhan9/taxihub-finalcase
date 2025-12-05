@@ -272,3 +272,36 @@ func (r *DriverRepository) UpdateDriverRating(ctx context.Context, id string, ra
 	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
 	return err
 }
+
+func (r *DriverRepository) UpdateDriverLocation(ctx context.Context, driverID string, latLocation, lonLocation float64) error {
+
+	objID, err := primitive.ObjectIDFromHex(driverID)
+	if err != nil {
+		return nil
+	}
+
+	// "MongoDB GeoJSON" formatı kullanarak enlem ve boylam işlemleri yaparız. Öncelikle işlem sırasına göre longitude(boylam), sonrasında latitude(enlem) yazılır.
+	location := models.Location{
+		Type:        "Point",
+		Coordinates: []float64{lonLocation, latLocation},
+	}
+
+	updateDriverLoc := bson.M{
+		"$set": bson.M{
+			"location":  location,
+			"updatedAt": time.Now(),
+		},
+	}
+
+	result, err := r.collection.UpdateOne(ctx, bson.M{"_id": objID}, updateDriverLoc)
+	if err != nil {
+		return err
+	}
+
+	// Mongdodb'ye bir sorgu göndeririz ve eşleşen belge sayısını döner, hiçbir belge yok ise "ErrNoDocument" döner. Kodun temel amacı bir belge değiştirme işleminin olup olmadığını anlamak.
+	if result.MatchedCount == 0 {
+		return mongo.ErrNoDocuments
+	}
+
+	return nil
+}
