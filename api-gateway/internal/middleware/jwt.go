@@ -16,7 +16,7 @@ Yetkisiz kişilerin servislere erişimini kısıtlaması nedeniyle önemli bir k
 func JWTMiddleware(secret string) fiber.Handler {
 
 	return func(c *fiber.Ctx) error {
-		// secretten gelen değer boşsa, güvenlik burada devredışı olabilir.
+		// secretten gelen değer boşsa, güvenlik burada devredışı kalmış olabilir.
 		if secret == "" {
 			return c.Next()
 		}
@@ -47,15 +47,10 @@ func JWTMiddleware(secret string) fiber.Handler {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Geçersiz veya Süresi Dolmuş Token"})
 		}
 
-		// token'ın süresi dolmamış, yukarıda ki kod bloğunu geçerse içerik bilgilerini context'e ekleyebiliriz.
+		// token'ın süresi dolmamış, yukarıda ki kod bloğunu geçerse içerik bilgilerini context'e ekleyebiliriz..
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 			c.Locals("user", claims)
 		}
-
-		/* 		//TODO: Token doğrulaması yapılır.
-		   		if token == "" {
-		   			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "token geçersiz"})
-		   		} */
 
 		return c.Next()
 	}
