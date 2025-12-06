@@ -2,6 +2,7 @@ package router
 
 import (
 	"bitaksi-finalcase/api-gateway/internal/handlers"
+	"bitaksi-finalcase/api-gateway/internal/middleware"
 	"bitaksi-finalcase/api-gateway/internal/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,6 +25,9 @@ func SetupRouter(app *fiber.App, cfg GatewayConfig) *fiber.App {
 	})
 
 	driverGroup := app.Group("/drivers") // Driver'dan gelen route'leri bir grup altında topluyoruz.
+
+	// ProxyHandler önceki router içerisine "JWTSecret" ekledik. /drivers apilerine gelen istekler ilk önce "JWTMiddleware" içerisinde kontrol edilip "token" geçerliyse proxy'ye devam edecek.
+	driverGroup.Use(middleware.JWTMiddleware(cfg.JWTSecret))
 
 	// Proxy Handler: Tüm "/drivers" isteklerini DriverService'e ileten bir proxy.
 	// Koruma sağlar(method&path), driver-service'e yönlendirme yapıyor.

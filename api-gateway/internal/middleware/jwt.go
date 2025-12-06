@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 /*
@@ -15,6 +16,7 @@ Yetkisiz kişilerin servislere erişimini kısıtlaması nedeniyle önemli bir k
 func JWTMiddleware(secret string) fiber.Handler {
 
 	return func(c *fiber.Ctx) error {
+		// secretten gelen değer boşsa, güvenlik burada devredışı olabilir.
 		if secret == "" {
 			return c.Next()
 		}
@@ -30,12 +32,30 @@ func JWTMiddleware(secret string) fiber.Handler {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "authorization header formatı: bearer <token>"})
 		}
 
-		token := parts[1]
+		//token := parts[1]
+		tokenString := parts[1]
 
-		//TODO: Token doğrulaması yapılır.
-		if token == "" {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "token geçersiz"})
+		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+			// İmza metodunun "hmac" olup olmadığını kontrol edeceğimiz aşama
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fiber.ErrUnauthorized
+			}
+			return []byte(secret), nil
+		})
+
+		if err != nil || !token.Valid {
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Geçersiz veya Süresi Dolmuş Token"})
 		}
+
+		// token'ın süresi dolmamış, yukarıda ki kod bloğunu geçerse içerik bilgilerini context'e ekleyebiliriz.
+		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			c.Locals("user", claims)
+		}
+
+		/* 		//TODO: Token doğrulaması yapılır.
+		   		if token == "" {
+		   			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "token geçersiz"})
+		   		} */
 
 		return c.Next()
 	}
