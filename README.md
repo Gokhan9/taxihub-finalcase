@@ -118,6 +118,9 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Driver Score Calculate
 ![score](https://github.com/user-attachments/assets/61e526ba-64c5-4265-bc62-34ca72cd2adf)
 
+## Driver Score Error Mesajı
+![Score Err](https://github.com/user-attachments/assets/41b7e8f9-4cf2-4640-b422-70f3b086b7ef)
+
 ## Location Update 
 ![Location](https://github.com/user-attachments/assets/15ace614-9fcc-4408-abcf-683448e4af73)
 
