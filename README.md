@@ -108,10 +108,10 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Location
 ![Location](https://github.com/user-attachments/assets/15ace614-9fcc-4408-abcf-683448e4af73)
 
-## Delete
+## ID'ye Göre Delete
 ![Delete](https://github.com/user-attachments/assets/3dedd8d8-223f-440d-a2a3-ca148e06eca5)
 
-## Benzer Plaka Error Mesajı
+## Benzer Plaka Sonrası Error Mesajı
 ![Benzer Plaka sonrası err](https://github.com/user-attachments/assets/1479b231-8ba3-4f48-b51c-862190f28c00)
 
 ## Geçersiz Plaka Sonrası Error Mesajı
