@@ -36,8 +36,8 @@ graph LR
 ### Docker ile 
 Mevcut bilgisayarınızda Docker ve Docker Compose kuruluysa, tek bir komut kullanarak projeyi ayağa kaldırabilirsiniz.
 ```bash
-#Servis & Sevisleri Başlatmak için:
+# Servis & Sevisleri Başlatmak için:
 docker-compose up --build
-#Servis & Servisleri Kapatmak için:
+# Servis & Servisleri Kapatmak için:
 docker-compose down
 ```
