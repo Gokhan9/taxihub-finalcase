@@ -69,6 +69,6 @@ Her servis kendine ait olan (.env) dosyasını kullanıyor.
 
 **Driver Service (.env)
 
-PORT=8081
-MONGO_URI=mongodb://localhost:27017
-MONGO_DB_NAME=bitaksi
+`PORT` = `8081`
+`MONGO_URI` = `mongodb://localhost:27017`
+`MONGO_DB_NAME` = `bitaksi`
