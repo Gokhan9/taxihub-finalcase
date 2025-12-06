@@ -83,6 +83,8 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 * **Postman Collection:** Proje içerisinde `docs/postman/` klasöründe ki JSON dosyalarını Postman'a import edebilirsiniz.
 
 ---
+
+![Swagger](https://github.com/user-attachments/assets/f09dd11a-2a12-49a4-aa5f-ffcd53a71b22)
 ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
 ![GET-1 - updatedAt ve Status](https://github.com/user-attachments/assets/08bf4f91-99d5-4163-80ec-2e80b06c923b)
 ![driverspage=1 pageSize=20](https://github.com/user-attachments/assets/58104f90-c5c0-40e0-9e75-f99d04dd3dc1)
