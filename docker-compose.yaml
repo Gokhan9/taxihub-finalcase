@@ -31,8 +31,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DRIVER_SERVICE_URL: "http://localhost:8081" 
-      JWT_SECRET: "your-jwt-secret"
+      DRIVER_SERVICE_URL: "http://driver-service:8081" 
+      JWT_SECRET: "jwt-secret"
       PORT: "8080"
     depends_on:
       - driver-service

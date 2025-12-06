@@ -175,6 +175,5 @@ func (s *DriverService) RateDriver(ctx context.Context, id string, ratingScore f
 }
 
 func (s *DriverService) UpdateDriverLocation(ctx context.Context, driverID string, req dto.UpdateLocationRequest) error {
-
 	return s.repo.UpdateDriverLocation(ctx, driverID, req.Lat, req.Lon)
 }
