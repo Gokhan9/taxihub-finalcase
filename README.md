@@ -87,10 +87,10 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Swagger
 ![Swagger](https://github.com/user-attachments/assets/f09dd11a-2a12-49a4-aa5f-ffcd53a71b22)
 
-## Post
+## Post + Status Offline
 ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
 
-## Status Update
+## Status Update + Status Available
 ![GET-1 - updatedAt ve Status](https://github.com/user-attachments/assets/08bf4f91-99d5-4163-80ec-2e80b06c923b)
 
 ## Page - PageSize ve Total
