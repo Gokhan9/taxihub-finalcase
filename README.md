@@ -97,8 +97,8 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ![Geçersiz Plaka sonrası err](https://github.com/user-attachments/assets/213e99f2-666d-4719-ad89-40080bc19435)
 ![GetDriverByID](https://github.com/user-attachments/assets/b0fdaf74-0daf-4ec9-a2aa-f870989ae327)
 
-*updatedAt - before ![updatedAt-before](https://github.com/user-attachments/assets/06e7d400-e78b-4406-ae94-c88bb750c98f)
+"updatedAt" - Before ![updatedAt-before](https://github.com/user-attachments/assets/06e7d400-e78b-4406-ae94-c88bb750c98f)
 
-*updatedAt - after ![updatedAt-after](https://github.com/user-attachments/assets/74d17b6b-9f67-4e0e-85d7-4dc62d414d9d)
+"updatedAt" - after ![updatedAt-after](https://github.com/user-attachments/assets/74d17b6b-9f67-4e0e-85d7-4dc62d414d9d)
 
 
