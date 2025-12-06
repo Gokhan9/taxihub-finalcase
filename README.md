@@ -73,3 +73,11 @@ Her servis kendine ait olan (.env) dosyasını kullanıyor.
 `PORT` = `8081`
 `MONGO_URI` = `mongodb://localhost:27017`
 `MONGO_DB_NAME` = `bitaksi_db`
+
+
+# API Dökümantasyonu
+
+Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden erişim sağlayabilirsiniz.
+
+* **Swagger UI:** `http://localhost:8081/swagger/index.html` (Driver Service endpointleri için)
+* **Postman Collection:** Proje içerisinde `docs/postman/` klasöründe ki JSON dosyalarını Postman'a import edebilirsiniz.
