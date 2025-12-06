@@ -44,7 +44,7 @@ docker-compose down
 ### 2: Manuel
 Servisleri ilgili klasör içerisine giderek tek tek çalıştırabilirsiniz. Bunu yapmak isterseniz:
 
-
+```
 1. Gereksinimler:**
 MongoDB'nin localinizde çalışıyor olması gerekir.
 
@@ -56,7 +56,7 @@ go run cmd/api-gateway/main.go
 3. Driver Service:**
 cd driver-service
 go run cmd/driver-service/main.go
-
+```
 
 ## Konfigürasyon (.env)
 
