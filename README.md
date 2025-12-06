@@ -45,7 +45,6 @@ docker-compose down
 Servisleri ilgili klasör içerisine giderek tek tek çalıştırabilirsiniz. Bunu yapmak isterseniz:
 
 ```
-
 1. Gereksinimler:**
 MongoDB'nin localinizde çalışıyor olması gerekir.
 
