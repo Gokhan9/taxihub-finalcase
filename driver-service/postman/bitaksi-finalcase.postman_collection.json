@@ -1,0 +1,384 @@
+{
+	"info": {
+		"_postman_id": "0100e59d-6584-4920-9b3c-8cb41308a934",
+		"name": "bitaksi-finalcase",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28153626"
+	},
+	"item": [
+		{
+			"name": "CreateDriver",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"firstName\": \"Gökhan Can\",\r\n\"lastName\": \"Cömert\",\r\n\"plate\": \"34F\",\r\n\"taxiType\": \"sari\",\r\n\"carBrand\": \"BMW\",\r\n\"carModel\": \"M1\",\r\n\"lat\": 41.0631,\r\n\"lon\": 29.0069\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetDriverByID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933e5645da3ae07041a3526",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933e5645da3ae07041a3526"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllDrivers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateDriverByID",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"firstName\": \"Gökhan Can\",\r\n\"lastName\": \"Cömert\",\r\n\"plate\": \"34FF789\",\r\n\"taxiType\": \"sari\",\r\n\"carBrand\": \"BMW\",\r\n\"carModel\": \"M1\",\r\n\"lat\": 41.0631,\r\n\"lon\": 29.0069\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933e5645da3ae07041a3526",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933e5645da3ae07041a3526"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drivers/id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933eadf5da3ae07041a3527",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933eadf5da3ae07041a3527"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?page=1&pageSize=20",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers?page=1&pageSize=20",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drivers/nearby/lat/lon",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/nearby?lat=41.00&lon=28.99&taxiType=sari&radius=6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"nearby"
+					],
+					"query": [
+						{
+							"key": "lat",
+							"value": "41.00"
+						},
+						{
+							"key": "lon",
+							"value": "28.99"
+						},
+						{
+							"key": "taxiType",
+							"value": "sari"
+						},
+						{
+							"key": "radius",
+							"value": "6"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drivers/id/status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"Available\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933e5645da3ae07041a3526/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933e5645da3ae07041a3526",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drivers/id/rate",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"score\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933e3405da3ae07041a3524/rate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933e3405da3ae07041a3524",
+						"rate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "drivers/id/location",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"firstName\": \"Gökhan Can\",\r\n\"lastName\": \"Cömert\",\r\n\"plate\": \"34FF789\",\r\n\"taxiType\": \"sari\",\r\n\"carBrand\": \"BMW\",\r\n\"carModel\": \"M1\",\r\n\"lat\": 41.0631,\r\n\"lon\": 29.0069\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/drivers/6933e5645da3ae07041a3526/location",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"drivers",
+						"6933e5645da3ae07041a3526",
+						"location"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
