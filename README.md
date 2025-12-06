@@ -85,8 +85,11 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ---
 
 Swagger - ![Swagger](https://github.com/user-attachments/assets/f09dd11a-2a12-49a4-aa5f-ffcd53a71b22)
+
 Post - ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
+
 Status - ![GET-1 - updatedAt ve Status](https://github.com/user-attachments/assets/08bf4f91-99d5-4163-80ec-2e80b06c923b)
+
 Page - Pagesize ve Total ![driverspage=1 pageSize=20](https://github.com/user-attachments/assets/58104f90-c5c0-40e0-9e75-f99d04dd3dc1)
 DistanceKm![driversnearbylat=41 00 lon=28 99 taxiType=sari radius=6](https://github.com/user-attachments/assets/1c126ddb-cbfc-457d-88ac-c26ba3389421)
 Status (Available, Busy, Offline) ![status(available,busy,offline)](https://github.com/user-attachments/assets/bd9b1a2e-f9f3-4cbf-95f1-720dfe5399a1)
