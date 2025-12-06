@@ -31,5 +31,5 @@ graph LR
 * bitaksi.finalcase/docker-compose.yaml
 
 ## Kurulum ve Çalıştırma
-* **Projeyi çalıştırmak için 2 farklı yöntem kullanılıyor.
-* **Docker ile tek komut yazarak projeyi down veya build edebiliyoruz.
+* Projeyi çalıştırmak için 2 farklı yöntem kullanılıyor.
+* Docker ile tek komut yazarak projeyi down veya build edebiliyoruz.
