@@ -7,7 +7,6 @@ Proje mikroservis mimarisi ile geliştirilmiş, ölçeklenebilir ve yüksek perf
 Proje, modern bir mikroservis mimarisi ile temellendirilmeye çalışılmıştır.
 
 ```marmaid
-graph LR
   Client - HTTP Request - API Gateway[8080]
   API Gateway - JWT Auth ve Rate Limit - GatewayLogic
   GatewayLogic - Proxy - Driver Service[8081]
