@@ -65,11 +65,13 @@ Her servis kendine ait olan (.env) dosyasını kullanıyor.
 
 ```
 - API Gateway  
+
   PORT = 8080  
   DRIVER_SERVICE_URL = http://driver-service:8081  
   JWT_SECRET = your-256-bit-secret
 
 - Driver Service  
+
   PORT = 8081  
   MONGO_URI = mongodb://localhost:27017  
   MONGO_DB_NAME = bitaksi
