@@ -96,7 +96,7 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Page - PageSize ve Total
 ![driverspage=1 pageSize=20](https://github.com/user-attachments/assets/58104f90-c5c0-40e0-9e75-f99d04dd3dc1)
 
-## DistanceKm
+## DistanceKm (drivers/nearby?lat=41.00&lon=28.99&taxiType=sari&radius=6)
 ![driversnearbylat=41 00 lon=28 99 taxiType=sari radius=6](https://github.com/user-attachments/assets/1c126ddb-cbfc-457d-88ac-c26ba3389421)
 
 ## Status (Available, Busy, Offline)
