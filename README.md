@@ -29,3 +29,7 @@ graph LR
 * bitaksi.finalcase/api-gateway/internal/client-config-handlers-middleware-router-utils
 * bitaksi.finalcase/driver-service/config-docs-postman/internal/config-db-dto-handlers-models-repository-router-services-utils
 * bitaksi.finalcase/docker-compose.yaml
+
+## Kurulum ve Çalıştırma
+* **Projeyi çalıştırmak için 2 farklı yöntem kullanılıyor.
+* **Docker ile tek komut yazarak projeyi down veya build edebiliyoruz.
