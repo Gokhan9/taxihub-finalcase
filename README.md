@@ -32,7 +32,7 @@ Proje, modern bir mikroservis mimarisi ile temellendirilmeye çalışılmıştı
 ## Kurulum ve Çalıştırma
 * Projeyi çalıştırmak için 2 farklı yöntem kullanılıyor.
 
-### 1: Docker ile 
+### 1 - Docker ile 
 Mevcut bilgisayarınızda Docker ve Docker Compose kuruluysa, tek bir komut kullanarak projeyi ayağa kaldırabilir veya sonlandırabilirsiniz.
 ```bash
 # Servis & Sevisleri Başlatmak için:
@@ -41,19 +41,19 @@ docker-compose up --build
 docker-compose down
 ```
 
-### 2: Manuel
+### 2 - Manuel
 Servisleri ilgili klasör içerisine giderek tek tek çalıştırabilirsiniz. Bunu yapmak isterseniz:
 
 ```
 1. Gereksinimler:**
 MongoDB'nin localinizde çalışıyor olması gerekir.
 
-2. API Gateway:**
+2. API Gateway:
 
 cd api-gateway
 go run cmd/api-gateway/main.go
 
-3. Driver Service:**
+3. Driver Service:
 
 cd driver-service
 go run cmd/driver-service/main.go
