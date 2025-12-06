@@ -32,4 +32,12 @@ graph LR
 
 ## Kurulum ve Çalıştırma
 * Projeyi çalıştırmak için 2 farklı yöntem kullanılıyor.
-* Docker ile tek komut yazarak projeyi down veya build edebiliyoruz.
+
+### Docker ile 
+Mevcut bilgisayarınızda Docker ve Docker Compose kuruluysa, tek bir komut kullanarak projeyi ayağa kaldırabilirsiniz.
+```bash
+#Servis & Sevisleri Başlatmak için:
+docker-compose up --build
+#Servis & Servisleri Kapatmak için:
+docker-compose down
+```
