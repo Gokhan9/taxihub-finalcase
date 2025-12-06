@@ -21,5 +21,11 @@ graph LR
 * Dil : Go
 * Web Framework : Fiber (Diğer frameworklere göre hızlı ve yönetilmesi daha kolay olduğu için seçildi.)
 * Veritabanı : MongoDB
-* Authentication: JWT (Json web tokens)
+* Authentication: JWT (JSON Web Tokens)
 * Conteinerization: Docker - Docker Compose
+
+
+## Proje'nin Mimari Yapısı
+bitaksi.finalcase/api-gateway/internal/client-config-handlers-middleware-router-utils
+bitaksi.finalcase/driver-service/config-docs-postman/internal/config-db-dto-handlers-models-repository-router-services-utils
+bitaksi.finalcase/docker-compose.yaml
