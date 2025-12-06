@@ -28,25 +28,12 @@ Proje, modern bir mikroservis mimarisi ile temellendirilmeye çalışılmıştı
 ## Proje Mimarisi
 
 ### 🛡️ API Gateway
-- `bitaksi.finalcase/api-gateway/internal/client`
-- `bitaksi.finalcase/api-gateway/internal/config`
-- `bitaksi.finalcase/api-gateway/internal/handlers`
-- `bitaksi.finalcase/api-gateway/internal/middleware`
-- `bitaksi.finalcase/api-gateway/internal/router`
-- `bitaksi.finalcase/api-gateway/internal/utils`
+- `bitaksi.finalcase/api-gateway/cmd/internal/client-config-handlers-middleware-router-utils`
+
+* bitaksi.finalcase/docker-compose.yaml
 
 ### 🚖 Driver Service
-- `bitaksi.finalcase/driver-service/config`
-- `bitaksi.finalcase/driver-service/docs-postman`
-- `bitaksi.finalcase/driver-service/internal/config`
-- `bitaksi.finalcase/driver-service/internal/db`
-- `bitaksi.finalcase/driver-service/internal/dto`
-- `bitaksi.finalcase/driver-service/internal/handlers`
-- `bitaksi.finalcase/driver-service/internal/models`
-- `bitaksi.finalcase/driver-service/internal/repository`
-- `bitaksi.finalcase/driver-service/internal/router`
-- `bitaksi.finalcase/driver-service/internal/services`
-- `bitaksi.finalcase/driver-service/internal/utils`
+- `bitaksi.finalcase/driver-service/cmd/config/docs/postman/internal/config-db-dto-handlers-models-repository-router-services-utils`
 
 ### 🐳 Docker & Deployment
 - `bitaksi.finalcase/docker-compose.yaml`
