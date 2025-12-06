@@ -90,7 +90,7 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Post
 ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
 
-## Status
+## Status Update
 ![GET-1 - updatedAt ve Status](https://github.com/user-attachments/assets/08bf4f91-99d5-4163-80ec-2e80b06c923b)
 
 ## Page - PageSize ve Total
@@ -102,10 +102,10 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Status (Available, Busy, Offline)
 ![status(available,busy,offline)](https://github.com/user-attachments/assets/bd9b1a2e-f9f3-4cbf-95f1-720dfe5399a1)
 
-## Score
+## Driver Score Calculate
 ![score](https://github.com/user-attachments/assets/61e526ba-64c5-4265-bc62-34ca72cd2adf)
 
-## Location
+## Location Update 
 ![Location](https://github.com/user-attachments/assets/15ace614-9fcc-4408-abcf-683448e4af73)
 
 ## ID'ye Göre Delete
