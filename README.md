@@ -97,10 +97,9 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 
 # Unit Test Senaryosu
 
-```bash
-Geometry için Unit Test senaryosu eklendi ve İstanbul-Ankara arası hata payını göz önünde bulundurarak enlem ve boylam cinsinden mesafe hesaplaması yapıldı.
+* Geometry için Unit Test senaryosu eklendi ve İstanbul-Ankara arası hata payını göz önünde bulundurarak enlem ve boylam cinsinden mesafe hesaplaması yapıldı.
 
-```
+
 
 ## Swagger
 ![Swagger](https://github.com/user-attachments/assets/f09dd11a-2a12-49a4-aa5f-ffcd53a71b22)
