@@ -142,5 +142,10 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## "updatedAt" - After
 ![updatedAt-after](https://github.com/user-attachments/assets/74d17b6b-9f67-4e0e-85d7-4dc62d414d9d)
 
+## "Update" - Post işleminde "firstName : Gökhan Can" olarak oluşturuldu, 
+![Post-2](https://github.com/user-attachments/assets/8702ea18-64dc-4ca7-ab2a-a57adc17e8b7)
+
+## "Update" - ID'ye göre Update işleminde response "firstName : Gökhan" olarak dönüyor.
+![Update-2](https://github.com/user-attachments/assets/3496ec25-e3ee-4c82-a49d-5cc4b61565e4)
 
 
