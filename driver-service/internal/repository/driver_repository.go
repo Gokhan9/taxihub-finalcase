@@ -3,11 +3,11 @@ package repository
 import (
 	"context"
 	"log"
-	"sort" // Added for sorting drivers by distance
+	"sort"
 	"time"
 
 	"bitaksi-finalcase/driver-service/internal/models"
-	. "bitaksi-finalcase/driver-service/internal/utils" // Added for HaversineDistance
+	. "bitaksi-finalcase/driver-service/internal/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -113,7 +113,7 @@ func (r *DriverRepository) DeleteDriverByID(ctx context.Context, id string) erro
 	return err
 }
 
-// FindNearbyDrivers finds drivers within a given radius using geospatial queries.
+// FindNearbyDrivers
 func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
 	// radiusKm'yi radyana dönüştürmek için km tipinde dünyanın yarıçapı
 	const earthRadiusKm = 6371

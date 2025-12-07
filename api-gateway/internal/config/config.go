@@ -14,7 +14,7 @@ type Config struct {
 
 /*
 Bu katman, her şeyin başladığı yerdir ve uygulama ayağa kalkmadan önce "nasıl" çalışacağını bilmesi gerekir.
-Uygulamanın konfigurasyonları bu katmanda yönetilir. Adı üstünde "config".
+Uygulamanın konfigürasyonları bu katmanda yönetilir. Adı üstünde "config".
 PORT, DRIVER_SERVICE_URL, JWT_SECRET(Güvenlik Anahtarı) gibi kritik bilgileri ".env" dosyasından okur. Viper kütüphanesi sayesinde bu veriler okunur ve doğrulanır. Bu yapı
 olmadan gateway nereye bağlanacağını bilemez.
 */
@@ -22,16 +22,16 @@ func LoadConfig() (Config, error) {
 
 	var cfg Config
 
-	// 1. Önce .env dosyasını okumayı dene (Local Development için)
+	// 1. Önce .env dosyasını okumayı dene (Local ortam için)
 	viper.AddConfigPath(".")
 	viper.SetConfigFile(".env")
 	viper.SetConfigType("env")
 
 	if err := viper.ReadInConfig(); err != nil {
-		// .env dosyası yoksa sorun değil, devam et.
+		// .env dosyası yoksa bile takılmadan devam eder
 	}
 
-	// 2. Ortam değişkenlerini bağla
+	// 2. ortam değişkenlerini bağla
 	viper.AutomaticEnv()
 
 	viper.BindEnv("PORT")
