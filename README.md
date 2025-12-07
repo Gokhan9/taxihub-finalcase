@@ -108,6 +108,9 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Swagger
 ![Swagger](https://github.com/user-attachments/assets/f09dd11a-2a12-49a4-aa5f-ffcd53a71b22)
 
+## Driver Service & API-Gateway
+![Sunucular](https://github.com/user-attachments/assets/45aa8f72-a540-4677-9c69-1842a8499c2b)
+
 ## Post + Status Offline
 ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
 
@@ -155,5 +158,7 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 
 ## "Update" - ID'ye göre Update işleminde response "firstName : Gökhan" olarak dönüyor.
 ![Update-2](https://github.com/user-attachments/assets/3496ec25-e3ee-4c82-a49d-5cc4b61565e4)
+
+
 
 
