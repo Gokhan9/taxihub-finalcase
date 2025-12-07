@@ -111,6 +111,9 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 ## Driver Service & API-Gateway
 ![Sunucular](https://github.com/user-attachments/assets/45aa8f72-a540-4677-9c69-1842a8499c2b)
 
+## Mongo
+![Mongo](https://github.com/user-attachments/assets/266220f4-ec0e-4be7-b96c-b75559b7e9b7)
+
 ## Post + Status Offline
 ![Post](https://github.com/user-attachments/assets/0bfdcd3f-b9ce-4144-bada-63f9a43dfe4c)
 
