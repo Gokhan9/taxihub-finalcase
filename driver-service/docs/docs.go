@@ -179,7 +179,7 @@ const docTemplate = `{
         },
         "/drivers/nearby": {
             "get": {
-                "description": "Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.",
+                "description": "Belirtilen konum ve yarıçaptaki Müsait (Available) ve Araç Nitelikleri(pets friendly, large luggage) taksileri listeler.",
                 "consumes": [
                     "application/json"
                 ],
@@ -477,6 +477,12 @@ const docTemplate = `{
         "dto.DriverCreateRequest": {
             "type": "object",
             "properties": {
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "carBrand": {
                     "type": "string"
                 },
@@ -579,6 +585,12 @@ const docTemplate = `{
         "models.Driver": {
             "type": "object",
             "properties": {
+                "attributes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
                 "carBrand": {
                     "type": "string"
                 },

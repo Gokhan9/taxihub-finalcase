@@ -114,7 +114,7 @@ func (r *DriverRepository) DeleteDriverByID(ctx context.Context, id string) erro
 }
 
 // FindNearbyDrivers
-func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
+func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radiusKm float64, taxiType string, attributes []string) ([]*models.Driver, error) {
 	// radiusKm'yi radyana dönüştürmek için km tipinde dünyanın yarıçapı
 	const earthRadiusKm = 6371
 
@@ -137,6 +137,12 @@ func (r *DriverRepository) FindNearbyDrivers(ctx context.Context, lat, lon, radi
 
 	if taxiType != "" {
 		filter["taxiType"] = taxiType
+	}
+
+	if len(attributes) > 0 {
+		filter["attributes"] = bson.M{
+			"$all": attributes,
+		}
 	}
 
 	cursor, err := r.collection.Find(ctx, filter)
@@ -230,7 +236,21 @@ func (r *DriverRepository) EnSureIndexes(ctx context.Context) {
 
 	_, err := r.collection.Indexes().CreateOne(ctx, mod)
 	if err != nil {
-		log.Println("Unique index. could not be created:", err)
+		log.Println("Index oluşturulamadı:", err)
+	}
+
+	geoMod := mongo.IndexModel{
+		Keys: bson.D{
+			{Key: "location", Value: "2dsphere"},
+			{Key: "status", Value: 1},
+			{Key: "attributes", Value: 1},
+		},
+		Options: options.Index().SetName("geo_status_attr_idx"),
+	}
+
+	_, err = r.collection.Indexes().CreateOne(ctx, geoMod)
+	if err != nil {
+		log.Println("geo index oluşturulamadı", err)
 	}
 }
 

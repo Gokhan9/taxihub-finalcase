@@ -2,6 +2,10 @@ basePath: /
 definitions:
   dto.DriverCreateRequest:
     properties:
+      attributes:
+        items:
+          type: string
+        type: array
       carBrand:
         type: string
       carModel:
@@ -68,6 +72,10 @@ definitions:
     type: object
   models.Driver:
     properties:
+      attributes:
+        items:
+          type: string
+        type: array
       carBrand:
         type: string
       carModel:
@@ -399,7 +407,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.
+      description: Belirtilen konum ve yarıçaptaki Müsait (Available) ve Araç Nitelikleri(pets
+        friendly, large luggage) taksileri listeler.
       parameters:
       - description: Enlem (Latitude)
         in: query

@@ -57,12 +57,13 @@ func (h *DriverHandler) CreateDriver(c *fiber.Ctx) error {
 	}
 
 	driver := &models.Driver{
-		FirstName: req.FirstName,
-		LastName:  req.LastName,
-		Plate:     req.Plate,
-		TaxiType:  req.TaxiType,
-		CarBrand:  req.CarBrand,
-		CarModel:  req.CarModel,
+		FirstName:  req.FirstName,
+		LastName:   req.LastName,
+		Plate:      req.Plate,
+		TaxiType:   req.TaxiType,
+		CarBrand:   req.CarBrand,
+		CarModel:   req.CarModel,
+		Attributes: req.Attributes,
 		Location: models.Location{
 			Type:        "Point",
 			Coordinates: []float64{req.Lon, req.Lat},
@@ -185,7 +186,7 @@ func (h *DriverHandler) DeleteDriverByID(c *fiber.Ctx) error {
 
 // GetNearbyTaxisHandler godoc
 // @Summary Yakındaki Taksileri Getir
-// @Description Belirtilen konum ve yarıçaptaki Müsait (Available) taksileri listeler.
+// @Description Belirtilen konum ve yarıçaptaki Müsait (Available) ve Araç Nitelikleri(pets friendly, large luggage) taksileri listeler.
 // @Tags Drivers
 // @Accept json
 // @Produce json
@@ -201,7 +202,8 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 	latStr := c.Query("lat")
 	lonStr := c.Query("lon")
 	taxiType := c.Query("taxiType")
-	radiusStr := c.Query("radius", "6") // Default radius to 6 km
+	radiusStr := c.Query("radius", "6")      // Default radius to 6 km
+	attributesParam := c.Query("attributes") // pets friendly, large luggage etc..
 
 	// str-float dönüşümleri. Query parametreleri her zaman string gelir ve coğrafi hesaplamalar yaparken sayı gerekiyor.
 	lat, err := strconv.ParseFloat(latStr, 64)
@@ -222,7 +224,13 @@ func (h *DriverHandler) GetNearbyTaxisHandler(c *fiber.Ctx) error {
 			"error": "Invalid radius"})
 	}
 
-	drivers, err := h.service.GetNearbyTaxis(c.Context(), lat, lon, radiusKm, taxiType)
+	// for pets or another attributes(maybe large luggage, wifi etc..)
+	var attributes []string
+	if attributesParam != "" {
+		attributes = strings.Split(attributesParam, ",")
+	}
+
+	drivers, err := h.service.GetNearbyTaxis(c.Context(), lat, lon, radiusKm, taxiType, attributes)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

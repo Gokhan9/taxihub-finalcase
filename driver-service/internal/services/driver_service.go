@@ -117,8 +117,8 @@ func (s *DriverService) DeleteDriverByID(ctx context.Context, id string) error {
 }
 
 // GetNearbyTaxis retrieves a list of nearby drivers based on location and taxi type.
-func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm float64, taxiType string) ([]*models.Driver, error) {
-	drivers, err := s.repo.FindNearbyDrivers(ctx, lat, lon, radiusKm, taxiType)
+func (s *DriverService) GetNearbyTaxis(ctx context.Context, lat, lon, radiusKm float64, taxiType string, attributes []string) ([]*models.Driver, error) {
+	drivers, err := s.repo.FindNearbyDrivers(ctx, lat, lon, radiusKm, taxiType, attributes)
 	if err != nil {
 		return nil, err
 	}
