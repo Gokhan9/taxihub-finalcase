@@ -33,6 +33,6 @@ func generateToken(envName, jwtToken string) {
 		fmt.Printf("Hata %s: %v\n", envName, err)
 	}
 
-	fmt.Printf("ortam: %s\n", envName)
-	fmt.Printf("bearer: %s\n", signedToken)
+	fmt.Printf("Ortam: %s\n", envName)
+	fmt.Printf("Bearer: %s\n", signedToken)
 }
