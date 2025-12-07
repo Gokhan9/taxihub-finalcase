@@ -57,7 +57,7 @@ func main() {
 		log.Fatalf("MongoDB ping başarısız: %v", err)
 	}
 
-	log.Println("MongoDB bağlantısı başarılı")
+	log.Println("MongoDB Bağlantısı Başarılı!")
 
 	// VERİTABANI
 	db := mongoClient.Database(cfg.MongoDBName)
@@ -72,26 +72,29 @@ func main() {
 
 	// --- GRACEFUL SHUTDOWN KATMANI ----
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	c := make(chan os.Signal, 1)                    // Bir kanal oluşturduk ve gelebilecek kapanma sinyallerini alacak.
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM) // Yakalamak istediğimiz sinyalleri (CTRL+C - SIGTERM) "Notify" ile tanımladık.
 
+	// * Goroutine
 	go func() {
-		log.Printf("Driver Service %s portunda çalışıyor.", cfg.Port)
+		log.Printf("Driver Service %s Portunda Çalışıyor.", cfg.Port) // Sunucumuzun belirttiğimiz portta çalıştığını doğrulayan str metin.
 		if err := fiberApp.Listen("0.0.0.0:" + cfg.Port); err != nil {
-			log.Panicf("Fiber sunucusu başlatılamadı: %v", err)
+			log.Panicf("Fiber sunucusu başlatılamadı: %v", err) // Fiber sunucusunun başlatıldığı sırada karşılaşılacak problemde "panic" oluşturup goroutine sayesine uygulamayı durdurur.
 		}
 	}()
 
-	<-c
+	<-c // Kapanma sinyali gelene kadar uygulama burada bloklanır, kapanma sinyali geldiği senaryoda alt satırlara girer.
 	log.Println("KAPANMA SİNYALİ. Graceful shutdown başlatılıyor.")
 
-	shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancelShutdown()
+	shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 5*time.Second) // kapanma işlemini "5 saniye" olarak sınırladık, 5 saniye içerisinde bitmezse context iptal olacak.
+	defer cancelShutdown()                                                                  // işlem biter, context serbest bırakılr.
 
+	// fiber sunucusu kapatılması
 	if err := fiberApp.ShutdownWithContext(shutdownCtx); err != nil {
 		log.Printf("sunucu kapatılırken hata oluştu: %v", err)
 	}
 
+	// mongodb bağlantısının kapatılması.
 	if err := mongoClient.Disconnect(shutdownCtx); err != nil {
 		log.Printf("mongodb bağlantısı kapatılırken hata oluştu: %v", err)
 	}
