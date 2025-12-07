@@ -9,6 +9,8 @@ import (
 	"context"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -68,8 +70,31 @@ func main() {
 
 	fiberApp := router.SetupRouter(driverHandler)
 
-	log.Printf("Driver Service %s portunda çalışıyor.", cfg.Port)
-	if err := fiberApp.Listen("0.0.0.0:" + cfg.Port); err != nil {
-		log.Fatalf("Fiber başlatılamadı: %v", err)
+	// --- GRACEFUL SHUTDOWN KATMANI ----
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		log.Printf("Driver Service %s portunda çalışıyor.", cfg.Port)
+		if err := fiberApp.Listen("0.0.0.0:" + cfg.Port); err != nil {
+			log.Panicf("Fiber sunucusu başlatılamadı: %v", err)
+		}
+	}()
+
+	<-c
+	log.Println("KAPANMA SİNYALİ. Graceful shutdown başlatılıyor.")
+
+	shutdownCtx, cancelShutdown := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelShutdown()
+
+	if err := fiberApp.ShutdownWithContext(shutdownCtx); err != nil {
+		log.Printf("sunucu kapatılırken hata oluştu: %v", err)
 	}
+
+	if err := mongoClient.Disconnect(shutdownCtx); err != nil {
+		log.Printf("mongodb bağlantısı kapatılırken hata oluştu: %v", err)
+	}
+
+	log.Println("Uygulama başarılı bir şekilde sonlandırıldı.")
 }
