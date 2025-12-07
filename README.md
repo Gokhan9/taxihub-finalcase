@@ -99,6 +99,10 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 
 * Geometry için Unit Test senaryosu eklendi ve İstanbul-Ankara arası hata payını göz önünde bulundurarak enlem ve boylam cinsinden mesafe hesaplaması yapıldı.
 
+# JWT Validation & Auth
+
+* Kimlik Doğrulama, yetkilendirme işlemleri için JWT Web Token üreten bir metod ekledim ve tokenlar sırasıyla test edildi.
+
 
 
 ## Swagger
