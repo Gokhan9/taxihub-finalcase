@@ -1,0 +1,25 @@
+{
+  "id": "6935ce12a4d88c47c92df5b0",
+  "firstName": "Gökhan Can",
+  "lastName": "CÖMERT",
+  "plate": "34SAS323",
+  "taxiType": "beyaz",
+  "carBrand": "BMW",
+  "carModel": "s",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      29.0069,
+      41.0631
+    ]
+  },
+  "createdAt": "2025-12-07T21:57:21.9920121+03:00",
+  "updatedAt": "2025-12-07T21:57:22.0089574+03:00",
+  "status": "Offline",
+  "rating": 0,
+  "ratingCount": 0,
+  "attributes": [
+    "Pet Friendly",
+    "Large Luggage"
+  ]
+}

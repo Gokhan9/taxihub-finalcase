@@ -1,0 +1,142 @@
+{
+  "drivers": [
+    {
+      "id": "6935ce12a4d88c47c92df5b0",
+      "firstName": "Gökhan Can",
+      "lastName": "CÖMERT",
+      "plate": "34SAS323",
+      "taxiType": "beyaz",
+      "carBrand": "BMW",
+      "carModel": "s",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0069,
+          41.0631
+        ]
+      },
+      "createdAt": "2025-12-07T18:57:21.992Z",
+      "updatedAt": "2025-12-07T18:57:22.008Z",
+      "status": "Offline",
+      "rating": 0,
+      "ratingCount": 0,
+      "attributes": [
+        "Pet Friendly",
+        "Large Luggage"
+      ]
+    },
+    {
+      "id": "6933e5645da3ae07041a3526",
+      "firstName": "Gökhan Can",
+      "lastName": "Cömert",
+      "plate": "34FF789",
+      "taxiType": "sari",
+      "carBrand": "BMW",
+      "carModel": "M1",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0069,
+          41.0631
+        ]
+      },
+      "createdAt": "2025-12-06T08:12:20.851Z",
+      "updatedAt": "2025-12-06T08:42:40.659Z",
+      "status": "Available",
+      "rating": 0,
+      "ratingCount": 0,
+      "attributes": null
+    },
+    {
+      "id": "6933e3405da3ae07041a3524",
+      "firstName": "Mehmet",
+      "lastName": "Kurt",
+      "plate": "34XYZ789",
+      "taxiType": "sari",
+      "carBrand": "Toyota",
+      "carModel": "Corolla",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0099,
+          41.0431
+        ]
+      },
+      "createdAt": "2025-12-06T08:03:12.562Z",
+      "updatedAt": "2025-12-06T08:05:59.958Z",
+      "status": "Available",
+      "rating": 2.5,
+      "ratingCount": 2,
+      "attributes": null
+    },
+    {
+      "id": "6933e09d5da3ae07041a3522",
+      "firstName": "Gökhan",
+      "lastName": "Cömert",
+      "plate": "34AA123",
+      "taxiType": "sari",
+      "carBrand": "BMW",
+      "carModel": "MPower",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0099,
+          41.0431
+        ]
+      },
+      "createdAt": "2025-12-06T07:51:57.782Z",
+      "updatedAt": "2025-12-06T07:59:13.759Z",
+      "status": "Offline",
+      "rating": 3.3333333333333335,
+      "ratingCount": 3,
+      "attributes": null
+    },
+    {
+      "id": "6933defd5da3ae07041a3521",
+      "firstName": "Mehmet",
+      "lastName": "Demir",
+      "plate": "34AC123",
+      "taxiType": "sari",
+      "carBrand": "Toyota",
+      "carModel": "Corolla",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0099,
+          41.0431
+        ]
+      },
+      "createdAt": "2025-12-06T07:45:01.956Z",
+      "updatedAt": "2025-12-06T07:56:43.173Z",
+      "status": "Available",
+      "rating": 3.5,
+      "ratingCount": 4,
+      "attributes": null
+    },
+    {
+      "id": "6933de925da3ae07041a3520",
+      "firstName": "Ahmet",
+      "lastName": "Demir",
+      "plate": "34ABC123",
+      "taxiType": "sari",
+      "carBrand": "Toyota",
+      "carModel": "Corolla",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          29.0099,
+          41.0431
+        ]
+      },
+      "createdAt": "2025-12-06T07:43:14.302Z",
+      "updatedAt": "2025-12-06T07:56:05.736Z",
+      "status": "Busy",
+      "rating": 2,
+      "ratingCount": 1,
+      "attributes": null
+    }
+  ],
+  "page": 1,
+  "pageSize": 20,
+  "total": 6
+}

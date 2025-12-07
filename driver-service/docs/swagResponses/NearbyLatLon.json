@@ -1,0 +1,14 @@
+[
+  {
+    "firstName": "Mehmet",
+    "lastName": "Demir",
+    "plate": "34AC123",
+    "distanceKm": 4.9
+  },
+  {
+    "firstName": "Mehmet",
+    "lastName": "Kurt",
+    "plate": "34XYZ789",
+    "distanceKm": 4.9
+  }
+]

@@ -1,0 +1,22 @@
+{
+  "id": "6933de925da3ae07041a3520",
+  "firstName": "Ahmet",
+  "lastName": "Demir",
+  "plate": "34ABC123",
+  "taxiType": "sari",
+  "carBrand": "Toyota",
+  "carModel": "Corolla",
+  "location": {
+    "type": "Point",
+    "coordinates": [
+      29.0099,
+      41.0431
+    ]
+  },
+  "createdAt": "2025-12-06T07:43:14.302Z",
+  "updatedAt": "2025-12-06T07:56:05.736Z",
+  "status": "Busy",
+  "rating": 2,
+  "ratingCount": 1,
+  "attributes": null
+}
