@@ -97,7 +97,7 @@ Projeyi çalıştırdıktan sonra dökümantasyonlara aşağıdaki adreslerden e
 
 # Test 
 
-```
+```bash
 Geometry için Unit Test senaryosu eklendi ve İstanbul-Ankara arası hata payını göz önünde bulundurarak enlem ve boylam cinsinden mesafe hesaplaması yapıldı.
 
 ```
